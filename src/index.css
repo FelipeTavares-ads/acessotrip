@@ -1,0 +1,110 @@
+@import '@fontsource-variable/atkinson-hyperlegible-next';
+@import 'tailwindcss';
+
+/*
+  Tokens. Contrast on white: ink 18.3 · ink-2 9.6 · ink-3 6.4 (5.9 on surface) · brand 7.2 · line-strong 3.04 (non-text).
+  Status text on its own soft fill: ok 5.75 · partial 6.1 · danger 5.75 · unknown 6.7.
+*/
+@theme {
+  --font-sans: 'Atkinson Hyperlegible Next Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #10151c;
+  --color-ink-2: #3c4654;
+  --color-ink-3: #56606e;
+  --color-line: #d5dbe3;
+  --color-line-strong: #8a95a3;
+  --color-surface: #f4f6f9;
+  --color-canvas: #ffffff;
+
+  --color-brand: #0b4fc4;
+  --color-brand-hover: #093f9d;
+  --color-brand-soft: #e8effc;
+  --color-brand-ink: #062f75;
+
+  --color-ok: #0a6b45;
+  --color-ok-soft: #e3f4ec;
+  --color-partial: #8a4b00;
+  --color-partial-soft: #fff1d6;
+  --color-unknown: #4a5361;
+  --color-unknown-soft: #eceff3;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdecea;
+  --color-star: #9a5b00;
+
+  --radius-card: 0.875rem;
+  --radius-control: 0.625rem;
+
+  --shadow-raise: 0 1px 2px rgb(16 21 28 / 0.06), 0 4px 12px rgb(16 21 28 / 0.06);
+  --shadow-float: 0 -1px 0 rgb(16 21 28 / 0.06), 0 -6px 18px rgb(16 21 28 / 0.06);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    line-height: 1.5;
+    accent-color: var(--color-brand);
+    caret-color: var(--color-brand);
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  body {
+    min-height: 100dvh;
+    font-feature-settings: 'kern';
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #c9dafb;
+    color: var(--color-ink);
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    letter-spacing: -0.012em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  /* Strong, consistent focus ring: 3px brand + 2px white gap, visible on photo and color. */
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  .on-dark :focus-visible {
+    outline-color: #ffffff;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

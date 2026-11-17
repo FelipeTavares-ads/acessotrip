@@ -1,0 +1,543 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T01:30:36.060Z",
+  "title": "Design System: AcessoTrip",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#10151c",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#23272c",
+          "#40454d",
+          "#606770",
+          "#838a93",
+          "#a9aeb7",
+          "#d1d4da",
+          "#eceff2"
+        ],
+        "contrast": "18.3:1 sobre branco"
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Tinta Média",
+        "canonical": "#3c4654",
+        "tonalRamp": [
+          "#090b0f",
+          "#21272f",
+          "#3d4653",
+          "#5c6776",
+          "#7f8a9a",
+          "#a5afbc",
+          "#ced5de",
+          "#eaeff5"
+        ],
+        "contrast": "9.6:1 sobre branco"
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Tinta Clara",
+        "canonical": "#56606e",
+        "tonalRamp": [
+          "#090b0f",
+          "#21272f",
+          "#3d4652",
+          "#5d6775",
+          "#7f8a99",
+          "#a6afbc",
+          "#ced5de",
+          "#ebeff5"
+        ],
+        "contrast": "6.4:1 sobre branco, 5.9:1 sobre surface"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Linha",
+        "canonical": "#d5dbe3",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#24272a",
+          "#41454b",
+          "#61676d",
+          "#848a91",
+          "#aaaeb5",
+          "#d1d4d9",
+          "#eceff1"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Linha Forte",
+        "canonical": "#8a95a3",
+        "tonalRamp": [
+          "#090b0f",
+          "#21272e",
+          "#3d4651",
+          "#5d6774",
+          "#7f8a98",
+          "#a6afbb",
+          "#ced5dd",
+          "#ebeff4"
+        ],
+        "contrast": "3.04:1 sobre branco (não textual)"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Superfície",
+        "canonical": "#f4f6f9",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#444547",
+          "#646669",
+          "#87898c",
+          "#acaeb0",
+          "#d3d4d6",
+          "#eeeeef"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Tela",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d4d4d4",
+          "#eeeeee"
+        ]
+      },
+      "brand": {
+        "role": "primary",
+        "displayName": "Azul Ficha",
+        "canonical": "#0b4fc4",
+        "tonalRamp": [
+          "#000827",
+          "#001f61",
+          "#0039a2",
+          "#1b5cd2",
+          "#4083fc",
+          "#73acff",
+          "#add5ff",
+          "#d5f0ff"
+        ],
+        "contrast": "7.2:1 sobre branco"
+      },
+      "brand-hover": {
+        "role": "primary",
+        "displayName": "Azul Ficha Escuro",
+        "canonical": "#093f9d",
+        "tonalRamp": [
+          "#010923",
+          "#052258",
+          "#0e3e93",
+          "#2b60c1",
+          "#4e86ea",
+          "#7dadff",
+          "#b4d5ff",
+          "#d9f0ff"
+        ]
+      },
+      "brand-soft": {
+        "role": "primary",
+        "displayName": "Azul Névoa",
+        "canonical": "#e8effc",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#23272d",
+          "#40454f",
+          "#606671",
+          "#838995",
+          "#a9aeb8",
+          "#d1d4db",
+          "#eceef3"
+        ]
+      },
+      "brand-ink": {
+        "role": "primary",
+        "displayName": "Azul Nanquim",
+        "canonical": "#062f75",
+        "tonalRamp": [
+          "#020a1e",
+          "#0d244e",
+          "#1d4283",
+          "#3964af",
+          "#5b88d6",
+          "#87aff1",
+          "#bbd6ff",
+          "#def0ff"
+        ]
+      },
+      "ok": {
+        "role": "status",
+        "displayName": "Atende",
+        "canonical": "#0a6b45",
+        "tonalRamp": [
+          "#001006",
+          "#00301b",
+          "#005432",
+          "#207851",
+          "#4a9c73",
+          "#7dbf9b",
+          "#b6e0c7",
+          "#dbf7e6"
+        ],
+        "contrast": "5.75:1 sobre ok-soft"
+      },
+      "ok-soft": {
+        "role": "status",
+        "displayName": "Atende (fundo)",
+        "canonical": "#e3f4ec",
+        "tonalRamp": [
+          "#080c0a",
+          "#202925",
+          "#3c4843",
+          "#5b6a63",
+          "#7e8d86",
+          "#a4b2ab",
+          "#ced7d2",
+          "#eaf0ed"
+        ]
+      },
+      "partial": {
+        "role": "status",
+        "displayName": "Atende parcialmente",
+        "canonical": "#8a4b00",
+        "tonalRamp": [
+          "#170600",
+          "#3f1c00",
+          "#6c3400",
+          "#945411",
+          "#ba773c",
+          "#daa071",
+          "#f3ccac",
+          "#ffe9d4"
+        ],
+        "contrast": "6.1:1 sobre partial-soft"
+      },
+      "partial-soft": {
+        "role": "status",
+        "displayName": "Atende parcialmente (fundo)",
+        "canonical": "#fff1d6",
+        "tonalRamp": [
+          "#0e0b05",
+          "#2c2619",
+          "#4e442f",
+          "#71654d",
+          "#94886f",
+          "#b8ad98",
+          "#dbd3c5",
+          "#f3eee4"
+        ]
+      },
+      "unknown": {
+        "role": "status",
+        "displayName": "Não informado",
+        "canonical": "#4a5361",
+        "tonalRamp": [
+          "#090b0f",
+          "#22272f",
+          "#3d4652",
+          "#5d6775",
+          "#808a99",
+          "#a6afbc",
+          "#cfd5de",
+          "#ebeff5"
+        ],
+        "contrast": "6.7:1 sobre unknown-soft"
+      },
+      "unknown-soft": {
+        "role": "status",
+        "displayName": "Não informado (fundo)",
+        "canonical": "#eceff3",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#252728",
+          "#434548",
+          "#64666a",
+          "#87898d",
+          "#acaeb1",
+          "#d3d4d6",
+          "#edeef0"
+        ]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Não atende / Erro",
+        "canonical": "#b42318",
+        "tonalRamp": [
+          "#200000",
+          "#510000",
+          "#890000",
+          "#b7271c",
+          "#e25242",
+          "#ff8674",
+          "#ffbcae",
+          "#ffdfd6"
+        ],
+        "contrast": "5.75:1 sobre danger-soft"
+      },
+      "danger-soft": {
+        "role": "status",
+        "displayName": "Não atende (fundo)",
+        "canonical": "#fdecea",
+        "tonalRamp": [
+          "#0e0a0a",
+          "#2c2423",
+          "#4e4240",
+          "#716261",
+          "#948583",
+          "#b8aaa9",
+          "#dbd2d1",
+          "#f3edec"
+        ]
+      },
+      "star": {
+        "role": "status",
+        "displayName": "Âmbar Estrela",
+        "canonical": "#9a5b00",
+        "tonalRamp": [
+          "#170700",
+          "#3f1c00",
+          "#6b3500",
+          "#935500",
+          "#ba782f",
+          "#d9a169",
+          "#f3cca8",
+          "#ffe9d2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Só o h1 da landing; 2.125rem no celular, 3.25rem a partir de 768px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "h1 das páginas do app (1.75rem no celular, 2rem a partir de 768px)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "h2 de seção e diálogo; 1.375rem no resumo por necessidade; 1.125rem em cartões e categorias."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrente; botões e rótulos de campo em peso 600."
+      },
+      "body-lead": {
+        "displayName": "Lead",
+        "purpose": "Leads e frases do resumo por necessidade, até 60-65ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Chips e badges de status."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Dicas, legendas, distância, aviso de dados fictícios."
+      }
+    },
+    "shadows": [
+      {
+        "name": "raise",
+        "value": "0 1px 2px rgb(16 21 28 / 0.06), 0 4px 12px rgb(16 21 28 / 0.06)",
+        "purpose": "Hover do cartão de local e toast."
+      },
+      {
+        "name": "float",
+        "value": "0 -1px 0 rgb(16 21 28 / 0.06), 0 -6px 18px rgb(16 21 28 / 0.06)",
+        "purpose": "Barra de navegação inferior fixa."
+      },
+      {
+        "name": "popover",
+        "value": "0 8px 24px rgb(16 21 28 / 0.14)",
+        "purpose": "Lista do autocomplete de destino."
+      },
+      {
+        "name": "modal",
+        "value": "0 12px 40px rgb(16 21 28 / 0.25)",
+        "purpose": "Diálogo nativo; backdrop rgb(16 21 28 / 0.55)."
+      }
+    ],
+    "focus": {
+      "name": "focus-ring",
+      "value": "outline: 3px solid var(--color-brand); outline-offset: 2px",
+      "purpose": "Anel global em todo :focus-visible; branco dentro de .on-dark; em cartões com link expandido, desenhado no contorno do cartão."
+    },
+    "motion": [
+      {
+        "name": "color-transition",
+        "value": "150ms",
+        "purpose": "Hover de botões, chips e campos."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrada do toast (220ms, sobe 8px)."
+      },
+      {
+        "name": "media-zoom",
+        "value": "500ms, scale(1.03)",
+        "purpose": "Foto do cartão no hover."
+      },
+      {
+        "name": "progress",
+        "value": "500ms width",
+        "purpose": "Preenchimento da barra de progresso do selo."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "prefers-reduced-motion: reduce zera animações e transições."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ],
+    "accessibility": {
+      "minTarget": "44px (2.75rem); botões e campos 48px (3rem)",
+      "typeUnits": "rem sobre font-size 100% na raiz",
+      "font": "Atkinson Hyperlegible Next Variable",
+      "statusEncoding": "ícone + texto + cor",
+      "selection": "#c9dafb com texto ink"
+    }
+  },
+  "components": [
+    {
+      "name": "Botão primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal da tela; em largura total no celular (Buscar).",
+      "html": "<button class=\"ds-btn-primary\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg>Buscar</button>",
+      "css": ".ds-btn-primary{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3rem;padding:0 1.25rem;border-radius:var(--radius-control,.625rem);font-weight:600;font-size:1rem;cursor:pointer;transition:background-color 150ms,color 150ms,border-color 150ms;background:var(--color-brand,#0b4fc4);color:#fff;border:0;}.ds-btn-primary:hover{background:var(--color-brand-hover,#093f9d);}.ds-btn-primary:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}"
+    },
+    {
+      "name": "Botão secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação alternativa ao lado da primária.",
+      "html": "<button class=\"ds-btn-secondary\">Ver ficha completa</button>",
+      "css": ".ds-btn-secondary{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3rem;padding:0 1.25rem;border-radius:var(--radius-control,.625rem);font-weight:600;font-size:1rem;cursor:pointer;transition:background-color 150ms,color 150ms,border-color 150ms;background:#fff;color:var(--color-brand,#0b4fc4);border:1px solid var(--color-brand,#0b4fc4);}.ds-btn-secondary:hover{background:var(--color-brand-soft,#e8effc);}.ds-btn-secondary:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Rótulo sempre visível, dica ligada por aria-describedby, borda line-strong.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-nome\" class=\"ds-label\">Nome completo</label><p class=\"ds-hint\" id=\"ds-nome-hint\">Como aparece no documento.</p><input id=\"ds-nome\" class=\"ds-input\" aria-describedby=\"ds-nome-hint\" placeholder=\"Maria da Silva\"></div>",
+      "css": ".ds-field{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:flex;flex-direction:column;gap:.375rem;max-width:22rem;}.ds-label{font-weight:600;color:var(--color-ink,#10151c);}.ds-hint{margin:-.125rem 0 0;font-size:.875rem;color:var(--color-ink-3,#56606e);}.ds-input{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);min-height:3rem;padding:0 1rem;border:1px solid var(--color-line-strong,#8a95a3);border-radius:var(--radius-control,.625rem);background:#fff;color:var(--color-ink,#10151c);font-size:1rem;transition:border-color 150ms;}.ds-input::placeholder{color:var(--color-ink-3,#56606e);}.ds-input:hover{border-color:var(--color-ink-3,#56606e);}.ds-input:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}"
+    },
+    {
+      "name": "Chip de necessidade",
+      "kind": "chip",
+      "refersTo": "chip-toggle",
+      "description": "Toggle com aria-pressed; pressionado troca o ícone para check, não só a cor.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Mobilidade</button><button class=\"ds-chip\" aria-pressed=\"false\">Visual</button></div>",
+      "css": ".ds-chips{display:flex;gap:.5rem;flex-wrap:wrap;}.ds-chip{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;padding:0 1rem;border-radius:9999px;border:1px solid var(--color-line-strong,#8a95a3);background:#fff;color:var(--color-ink,#10151c);font-size:.9375rem;font-weight:600;cursor:pointer;transition:background-color 150ms,border-color 150ms;}.ds-chip:hover{border-color:var(--color-ink-2,#3c4654);}.ds-chip[aria-pressed=\"true\"]{background:var(--color-brand-ink,#062f75);border-color:var(--color-brand-ink,#062f75);color:#fff;}.ds-chip:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}"
+    },
+    {
+      "name": "Status (tripla codificação)",
+      "kind": "custom",
+      "refersTo": "status-ok",
+      "description": "Ícone + palavra + cor para cada status da ficha.",
+      "html": "<div class=\"ds-statuses\"><span class=\"ds-st ds-st-ok\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Atende</span><span class=\"ds-st ds-st-partial\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 12h8\"/></svg>Atende parcialmente</span><span class=\"ds-st ds-st-no\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6M9 9l6 6\"/></svg>Não atende</span><span class=\"ds-st ds-st-unknown\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01\"/></svg>Não informado</span></div>",
+      "css": ".ds-statuses{display:flex;flex-wrap:wrap;gap:.5rem;}.ds-st{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;gap:.375rem;border-radius:9999px;font-weight:600;font-size:.9375rem;padding:.25rem .75rem;white-space:nowrap;}.ds-st-ok{background:var(--color-ok-soft,#e3f4ec);color:var(--color-ok,#0a6b45);}.ds-st-partial{background:var(--color-partial-soft,#fff1d6);color:var(--color-partial,#8a4b00);}.ds-st-no{background:var(--color-danger-soft,#fdecea);color:var(--color-danger,#b42318);}.ds-st-unknown{background:var(--color-unknown-soft,#eceff3);color:var(--color-unknown,#4a5361);}"
+    },
+    {
+      "name": "Selo Acessibilidade Verificada",
+      "kind": "chip",
+      "refersTo": "seal-badge",
+      "description": "Selo conquistado por mérito; pílula brand-ink com escudo.",
+      "html": "<span class=\"ds-seal\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"m9 12 2 2 4-4\"/></svg>Selo Acessibilidade Verificada</span>",
+      "css": ".ds-seal{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;gap:.375rem;border-radius:9999px;background:var(--color-brand-ink,#062f75);color:#fff;font-size:.875rem;font-weight:600;padding:.25rem .625rem;}"
+    },
+    {
+      "name": "Cartão de local",
+      "kind": "card",
+      "refersTo": "card-place",
+      "description": "Foto 16:10, nome como link que cobre o cartão, pills de status por necessidade, nota e distância.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-media\"></div><div class=\"ds-card-body\"><div class=\"ds-card-top\"><div><h3 class=\"ds-card-title\"><a href=\"#\">Pousada de exemplo</a></h3><p class=\"ds-card-sub\">Pousada em Porto Seguro, BA</p></div><button class=\"ds-icon-btn\" aria-pressed=\"false\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/></svg><span class=\"ds-sr\">Salvar nos favoritos</span></button></div><div class=\"ds-pills\"><span class=\"ds-pill ds-st-ok\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Mobilidade</span><span class=\"ds-pill ds-st-partial\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 12h8\"/></svg>Visual</span><span class=\"ds-pill ds-st-unknown\"><svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01\"/></svg>Auditiva</span></div><div class=\"ds-card-foot\"><span>4,7 <span class=\"ds-muted\">(23)</span></span><span class=\"ds-muted\">1,2 km</span></div></div></article>",
+      "css": ".ds-card{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);position:relative;max-width:20rem;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--color-line,#d5dbe3);border-radius:var(--radius-card,.875rem);background:#fff;transition:box-shadow 150ms;}.ds-card:hover{box-shadow:var(--shadow-raise,0 1px 2px rgb(16 21 28/.06),0 4px 12px rgb(16 21 28/.06));}.ds-card-media{aspect-ratio:16/10;background:var(--color-unknown-soft,#eceff3);}.ds-card-body{display:flex;flex-direction:column;gap:.75rem;padding:1rem;}.ds-card-top{display:flex;justify-content:space-between;gap:.75rem;align-items:flex-start;}.ds-card-title{margin:0;font-size:1.125rem;font-weight:700;line-height:1.375;}.ds-card-title a{color:var(--color-ink,#10151c);text-decoration:none;}.ds-card-title a::after{content:'';position:absolute;inset:0;}.ds-card-title a:hover{text-decoration:underline;}.ds-card-title a:focus-visible{outline:none;}.ds-card-title a:focus-visible::after{outline:3px solid var(--color-brand,#0b4fc4);border-radius:var(--radius-card,.875rem);}.ds-card-sub{margin:.125rem 0 0;font-size:.9375rem;color:var(--color-ink-2,#3c4654);}.ds-icon-btn{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;border:0;border-radius:9999px;background:transparent;color:var(--color-ink-2,#3c4654);cursor:pointer;}.ds-icon-btn:hover{background:var(--color-surface,#f4f6f9);}.ds-icon-btn:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}.ds-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}.ds-pills{display:flex;flex-wrap:wrap;gap:.375rem;}.ds-pill{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:inline-flex;align-items:center;gap:.25rem;border-radius:9999px;padding:.25rem .625rem .25rem .5rem;font-size:.875rem;font-weight:600;}.ds-pill svg{width:16px;height:16px;}.ds-st-ok{background:var(--color-ok-soft,#e3f4ec);color:var(--color-ok,#0a6b45);}.ds-st-partial{background:var(--color-partial-soft,#fff1d6);color:var(--color-partial,#8a4b00);}.ds-st-no{background:var(--color-danger-soft,#fdecea);color:var(--color-danger,#b42318);}.ds-st-unknown{background:var(--color-unknown-soft,#eceff3);color:var(--color-unknown,#4a5361);}.ds-card-foot{display:flex;justify-content:space-between;font-size:.875rem;font-weight:600;color:var(--color-ink,#10151c);font-variant-numeric:tabular-nums;}.ds-muted{font-weight:400;color:var(--color-ink-3,#56606e);}"
+    },
+    {
+      "name": "Navegação inferior (mobile)",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Barra fixa no alcance do polegar; ativo em brand com pílula brand-soft atrás do ícone.",
+      "html": "<nav class=\"ds-bnav\" aria-label=\"Menu principal\"><a href=\"#\" class=\"ds-bnav-item\" aria-current=\"page\"><span class=\"ds-bnav-ic\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg></span>Buscar</a><a href=\"#\" class=\"ds-bnav-item\"><span class=\"ds-bnav-ic\"><svg aria-hidden=\"true\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\"/></svg></span>Favoritos</a></nav>",
+      "css": ".ds-bnav{font-family:var(--font-sans,'Atkinson Hyperlegible Next Variable',ui-sans-serif,system-ui,sans-serif);display:grid;grid-template-columns:repeat(2,1fr);max-width:20rem;border-top:1px solid var(--color-line,#d5dbe3);background:#fff;box-shadow:var(--shadow-float,0 -1px 0 rgb(16 21 28/.06),0 -6px 18px rgb(16 21 28/.06));}.ds-bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.125rem;min-height:4rem;font-size:.8125rem;font-weight:600;color:var(--color-ink-2,#3c4654);text-decoration:none;}.ds-bnav-ic{display:inline-flex;align-items:center;justify-content:center;width:3.5rem;height:2rem;border-radius:9999px;transition:background-color 150ms;}.ds-bnav-item[aria-current=\"page\"]{color:var(--color-brand,#0b4fc4);}.ds-bnav-item[aria-current=\"page\"] .ds-bnav-ic{background:var(--color-brand-soft,#e8effc);}.ds-bnav-item:focus-visible{outline:3px solid var(--color-brand,#0b4fc4);outline-offset:2px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Ficha Técnica",
+    "overview": "O AcessoTrip é o app de viagem que o viajante já sabe usar (busca grande, cartões com foto, ficha do local) executado com rigor, e a diferença está toda no dado. O sistema visual existe para tornar uma resposta legível em segundos: este lugar serve para mim? Por isso a superfície é calma e convencional (fundo cinza-azulado claro, cartões brancos, texto quase preto, um único azul de ação) e toda a carga expressiva vai para o status: cada necessidade e cada categoria aparece com ícone, palavra e cor, nunca com um \"acessível\" vago.\n\nA acessibilidade não é um recurso do sistema, é a sua prova. A fonte é a Atkinson Hyperlegible Next, desenhada para baixa visão; todos os tamanhos são em rem e acompanham o zoom do navegador; todo alvo de toque tem pelo menos 44px; o anel de foco é largo e sempre visível. Densidade média, voltada ao celular: uma coluna no telefone, grade de cartões a partir de 768px.\n\nA direção foi escolhida pelo usuário como o padrão da categoria, com o acabamento de Airbnb, Booking.com e Wheelmap/AccessNow como régua. Nada de gradientes, de sombras pesadas ou de ornamento que não carregue informação.",
+    "keyCharacteristics": [
+      "Status com tripla codificação: ícone + texto + cor, sempre os três.",
+      "Um azul de marca profundo só para ação, seleção e foco.",
+      "Cartões brancos de raio médio com borda de 1px sobre fundo cinza-azulado.",
+      "Atkinson Hyperlegible Next em toda a UI; numerais tabulares em medidas, notas e distâncias.",
+      "Alvos de 44px no mínimo (48px nos botões e campos), anel de foco de 3px."
+    ],
+    "rules": [
+      {
+        "name": "The Triple-Code Rule",
+        "body": "Status nunca é só cor. Todo status carrega um ícone próprio (círculo com check, com traço, com X, com interrogação, com barra) e a palavra do status, visível ou em `sr-only` quando o espaço é compacto. A cor é o terceiro canal, não o primeiro.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Rule",
+        "body": "O azul de marca significa \"dá para agir aqui\" ou \"isto está selecionado\". Não é usado como decoração, fundo de seção ou cor de título.",
+        "section": "colors"
+      },
+      {
+        "name": "The Measured Contrast Rule",
+        "body": "Texto usa apenas ink, ink-2 ou ink-3 sobre branco e surface, ou a tinta de status sobre o seu próprio fundo suave. Uma cor nova entra no sistema só com o contraste medido e anotado no comentário de tokens de `src/index.css`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Rem-Only Rule",
+        "body": "Todo tamanho de texto é em rem sobre `font-size: 100%` na raiz, para respeitar o tamanho de fonte do usuário e o zoom. Nenhum tamanho de texto em px.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Measure Rule",
+        "body": "Medidas, notas, contagens e distâncias usam numerais tabulares (classe `tabular`).",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Cartões e blocos ficam planos em repouso, com borda line. Sombra só no hover, em sobreposições (popover, diálogo, toast) e na barra fixa.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do codificar todo status com ícone + texto + cor; em espaço compacto, o texto vai em `sr-only`, mas o ícone fica.",
+      "Do manter alvos de toque com no mínimo 44px (botões e campos em 48px).",
+      "Do usar o anel de foco global: outline de 3px brand com offset de 2px (branco em `.on-dark`); em cartões com link expandido, desenhar o anel no contorno do cartão.",
+      "Do escrever todo tamanho de texto em rem e usar Atkinson Hyperlegible Next em toda a UI.",
+      "Do usar numerais tabulares em medidas, notas e distâncias.",
+      "Do mostrar \"Não informado\" explicitamente, com o seu próprio ícone e cor cinza, em vez de esconder o item.",
+      "Do respeitar `prefers-reduced-motion`: transições e animações caem para 0.01ms.",
+      "Do anotar o contraste medido de toda cor nova no comentário de tokens."
+    ],
+    "donts": [
+      "Don't usar cor como único canal de status, seleção ou erro.",
+      "Don't usar o azul de marca como decoração ou fundo de seção.",
+      "Don't usar texto mais claro que ink-3, nem line-strong como cor de texto.",
+      "Don't usar gradientes ou sombras pesadas; superfícies ficam planas em repouso.",
+      "Don't usar tamanhos de texto em px nem caixa-alta espaçada como rótulo.",
+      "Don't criar alvos interativos menores que 44px.",
+      "Don't escrever \"acessível\" sem o dado; mostre a categoria, o status e a medida."
+    ]
+  }
+}
