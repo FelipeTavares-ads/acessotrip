@@ -10,6 +10,7 @@ import { Buscar, Inicio, Resultados } from './pages/Search'
 import { Avaliar, Local } from './pages/Place'
 import { Favoritos, MinhasAvaliacoes, Necessidades, Perfil } from './pages/Account'
 import { Roteiro, RoteiroSalvo } from './pages/Roteiro'
+import Panorama from './pages/Panorama'
 import {
   AvaliacoesParceiro,
   CadastroParceiro,
@@ -38,6 +39,7 @@ function NotFound() {
  * RF11–RF13 /local/:id · RF14 /local/:id/avaliar · RF15 denúncia em /local/:id · RF26 /roteiro
  * RF16 /parceiro/cadastro · RF17 /parceiro/onboarding · RF18–RF20 /parceiro/ficha · RF21–RF22 /parceiro
  * RF23 /parceiro/notificacoes · RF24 /parceiro/premium · RF25 sem API (lacuna B2)
+ * Extra (fora do PDF): /panorama — panorama público da acessibilidade por destino
  */
 export default function App() {
   return (
@@ -58,6 +60,7 @@ export default function App() {
                 <Route path="buscar" element={<Buscar />} />
                 <Route path="resultados" element={<Resultados />} />
                 <Route path="local/:id" element={<Local />} />
+                <Route path="panorama" element={<Panorama />} />
                 <Route element={<RequireAuth perfil="VIAJANTE" />}>
                   <Route path="local/:id/avaliar" element={<Avaliar />} />
                   <Route path="favoritos" element={<Favoritos />} />
