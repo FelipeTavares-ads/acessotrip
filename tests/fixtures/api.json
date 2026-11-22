@@ -1,0 +1,1907 @@
+{
+  "tiposNecessidade": [
+    {
+      "id": 1,
+      "codigo": "MOBILIDADE_REDUZIDA",
+      "descricao": "Mobilidade reduzida ou deficiência física"
+    },
+    {
+      "id": 2,
+      "codigo": "DEFICIENCIA_VISUAL",
+      "descricao": "Deficiência visual"
+    },
+    {
+      "id": 3,
+      "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+      "descricao": "Deficiência auditiva ou sensorial"
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "codigo": "ACESSO_EXTERNO",
+      "descricao": "Acesso externo"
+    },
+    {
+      "id": 2,
+      "codigo": "CIRCULACAO_INTERNA",
+      "descricao": "Circulação interna"
+    },
+    {
+      "id": 3,
+      "codigo": "SANITARIOS",
+      "descricao": "Sanitários"
+    },
+    {
+      "id": 4,
+      "codigo": "SINALIZACAO",
+      "descricao": "Sinalização"
+    },
+    {
+      "id": 5,
+      "codigo": "ATENDIMENTO",
+      "descricao": "Atendimento"
+    }
+  ],
+  "campos": [
+    {
+      "categoria": {
+        "id": 1,
+        "codigo": "ACESSO_EXTERNO",
+        "descricao": "Acesso externo"
+      },
+      "campos": [
+        {
+          "id": 9,
+          "codigo": "VAGA_RESERVADA",
+          "rotulo": "Vaga de estacionamento reservada",
+          "ajuda": "Vaga sinalizada para pessoa com deficiência, próxima à entrada.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 10,
+          "codigo": "ENTRADA_SEM_DEGRAUS",
+          "rotulo": "Entrada sem degraus ou com rampa",
+          "ajuda": "A entrada principal pode ser acessada sem degraus.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 11,
+          "codigo": "RAMPA_INCLINACAO",
+          "rotulo": "Inclinação da rampa de acesso",
+          "ajuda": "Inclinação da rampa principal, em percentual.",
+          "tipoValor": "NUMERO",
+          "unidade": "%",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 12,
+          "codigo": "PORTA_ENTRADA_LARGURA",
+          "rotulo": "Largura livre da porta de entrada",
+          "ajuda": "Vão livre da porta principal com ela totalmente aberta.",
+          "tipoValor": "NUMERO",
+          "unidade": "cm",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 19,
+          "codigo": "PISO_TATIL_EXTERNO",
+          "rotulo": "Piso tátil na rota de acesso",
+          "ajuda": "Piso tátil direcional ou de alerta da calçada até a entrada.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 2,
+        "codigo": "CIRCULACAO_INTERNA",
+        "descricao": "Circulação interna"
+      },
+      "campos": [
+        {
+          "id": 5,
+          "codigo": "ELEVADOR",
+          "rotulo": "Elevador ou plataforma elevatória",
+          "ajuda": "Acesso a todos os andares de uso do público sem escadas.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 6,
+          "codigo": "PORTAS_INTERNAS_LARGURA",
+          "rotulo": "Largura livre das portas internas",
+          "ajuda": "Menor vão livre entre as portas da rota acessível.",
+          "tipoValor": "NUMERO",
+          "unidade": "cm",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 7,
+          "codigo": "ROTA_SEM_OBSTACULOS",
+          "rotulo": "Rota interna sem obstáculos",
+          "ajuda": "Corredores livres de degraus, desníveis e objetos no caminho.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 8,
+          "codigo": "AREA_ADAPTADA",
+          "rotulo": "Quarto ou área de uso adaptada",
+          "ajuda": "Quarto, mesa ou área de uso adaptada para cadeira de rodas.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 18,
+          "codigo": "PISO_TATIL_INTERNO",
+          "rotulo": "Piso tátil interno",
+          "ajuda": "Piso tátil nas áreas internas de circulação.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 3,
+        "codigo": "SANITARIOS",
+        "descricao": "Sanitários"
+      },
+      "campos": [
+        {
+          "id": 1,
+          "codigo": "BANHEIRO_ACESSIVEL",
+          "rotulo": "Banheiro acessível",
+          "ajuda": "Sanitário acessível de uso do público ou do hóspede.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 2,
+          "codigo": "BARRAS_APOIO",
+          "rotulo": "Barras de apoio",
+          "ajuda": "Barras de apoio junto à bacia sanitária e ao lavatório.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 3,
+          "codigo": "AREA_GIRO",
+          "rotulo": "Área de giro de 1,50 m",
+          "ajuda": "Espaço livre para giro de 360 graus de cadeira de rodas.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 4,
+          "codigo": "BANCO_BANHO",
+          "rotulo": "Banco de banho",
+          "ajuda": "Banco articulado ou removível no chuveiro.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        },
+        {
+          "id": 23,
+          "codigo": "ALARME_SANITARIO",
+          "rotulo": "Alarme de emergência no sanitário",
+          "ajuda": "Dispositivo de chamada de emergência com sinal sonoro e luminoso.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 4,
+        "codigo": "SINALIZACAO",
+        "descricao": "Sinalização"
+      },
+      "campos": [
+        {
+          "id": 15,
+          "codigo": "SINALIZACAO_BRAILLE",
+          "rotulo": "Sinalização em braille",
+          "ajuda": "Placas de portas, elevadores e corrimãos com braille.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        },
+        {
+          "id": 16,
+          "codigo": "MAPA_TATIL",
+          "rotulo": "Mapa tátil",
+          "ajuda": "Mapa ou maquete tátil do espaço.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        },
+        {
+          "id": 17,
+          "codigo": "CONTRASTE_VISUAL",
+          "rotulo": "Contraste visual em degraus e portas",
+          "ajuda": "Faixas de contraste em degraus, portas e obstáculos.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        },
+        {
+          "id": 22,
+          "codigo": "ALARME_LUMINOSO",
+          "rotulo": "Alarme de emergência luminoso",
+          "ajuda": "Alarme de incêndio com sinal visual, além do sonoro.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 5,
+        "codigo": "ATENDIMENTO",
+        "descricao": "Atendimento"
+      },
+      "campos": [
+        {
+          "id": 20,
+          "codigo": "ATENDIMENTO_LIBRAS",
+          "rotulo": "Atendimento em Libras",
+          "ajuda": "Equipe ou recurso de atendimento em Língua Brasileira de Sinais.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        },
+        {
+          "id": 13,
+          "codigo": "CARDAPIO_ACESSIVEL",
+          "rotulo": "Cardápio ou informações em braille ou digital acessível",
+          "ajuda": "Cardápio, regras da casa ou informações em braille ou em formato digital acessível.",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        },
+        {
+          "id": 14,
+          "codigo": "CAO_GUIA",
+          "rotulo": "Aceita cão-guia",
+          "ajuda": "Entrada e permanência de cão-guia (Lei nº 11.126/2005).",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          }
+        },
+        {
+          "id": 21,
+          "codigo": "ATENDIMENTO_TEXTO",
+          "rotulo": "Atendimento por mensagem de texto",
+          "ajuda": "Canal de atendimento por texto (chat, SMS ou aplicativo de mensagens).",
+          "tipoValor": "SIM_NAO",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        }
+      ]
+    }
+  ],
+  "busca": {
+    "itens": [
+      {
+        "id": "ad1beea3-b752-4337-a0e6-d10695868987",
+        "nome": "Pousada Brisa do Descobrimento",
+        "tipo": "POUSADA",
+        "cidade": "Porto Seguro",
+        "estado": "BA",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7ac38385-6174-459f-b445-16fd1eb591ab.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        ],
+        "notaMedia": 4.69,
+        "totalAvaliacoes": 10,
+        "seloVerificado": true,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "e3620cb4-6934-4645-881e-ca556214b3c1",
+        "nome": "Hotel Fazenda Recanto das Águas",
+        "tipo": "HOTEL",
+        "cidade": "Socorro",
+        "estado": "SP",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/e3620cb4-6934-4645-881e-ca556214b3c1/ef536290-978f-41d2-a147-0100eac1d1f2.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        ],
+        "notaMedia": 4.6,
+        "totalAvaliacoes": 10,
+        "seloVerificado": true,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "9adea780-8cbc-49eb-9f42-3fce82f33c7b",
+        "nome": "Restaurante Sabor da Orla",
+        "tipo": "RESTAURANTE",
+        "cidade": "Porto Seguro",
+        "estado": "BA",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/9adea780-8cbc-49eb-9f42-3fce82f33c7b/09961cdd-a3c1-46b2-b735-26d0b51de075.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        ],
+        "notaMedia": 4.44,
+        "totalAvaliacoes": 9,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "2a1e38c9-33b9-4c17-adf5-02db47593aa4",
+        "nome": "Hotel Mirante do Pelourinho",
+        "tipo": "HOTEL",
+        "cidade": "Salvador",
+        "estado": "BA",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/2a1e38c9-33b9-4c17-adf5-02db47593aa4/c3c26705-c25f-4a99-a1cf-c32be9671bfb.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        ],
+        "notaMedia": 4.25,
+        "totalAvaliacoes": 4,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "6735deb1-f067-4fca-b7e4-19ade29afbaa",
+        "nome": "Espaço de Eventos Vila Serrana",
+        "tipo": "ESPACO_EVENTOS",
+        "cidade": "Gramado",
+        "estado": "RS",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/6735deb1-f067-4fca-b7e4-19ade29afbaa/7dc846f5-b587-44c8-9047-9cb4778c1cf3.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          }
+        ],
+        "notaMedia": 4.2,
+        "totalAvaliacoes": 5,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "9944e4b7-76bc-4d67-b35d-8ed79c782d7b",
+        "nome": "Bistrô da Ladeira",
+        "tipo": "RESTAURANTE",
+        "cidade": "Salvador",
+        "estado": "BA",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/9944e4b7-76bc-4d67-b35d-8ed79c782d7b/3e147423-7725-4c13-ae3a-71f5576504c9.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        ],
+        "notaMedia": 4,
+        "totalAvaliacoes": 3,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "b4f1a24e-d1c5-49fa-9958-b4debe843014",
+        "nome": "Pousada Vale Verde",
+        "tipo": "POUSADA",
+        "cidade": "Gramado",
+        "estado": "RS",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/b4f1a24e-d1c5-49fa-9958-b4debe843014/e307ad6b-36f7-48be-ab50-2268a99b431a.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [
+          {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          }
+        ],
+        "notaMedia": 4,
+        "totalAvaliacoes": 3,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      },
+      {
+        "id": "89f4b1fa-bae1-4793-8353-648e02a42938",
+        "nome": "Pousada Caminho do Arraial",
+        "tipo": "POUSADA",
+        "cidade": "Arraial d'Ajuda",
+        "estado": "BA",
+        "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/89f4b1fa-bae1-4793-8353-648e02a42938/28632177-c0b4-4ac6-9f3b-ee759751ad6c.png",
+        "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "necessidadesAtendidas": [],
+        "notaMedia": 3,
+        "totalAvaliacoes": 1,
+        "seloVerificado": false,
+        "destaque": false,
+        "distanciaKm": null
+      }
+    ],
+    "pagina": 0,
+    "tamanho": 12,
+    "totalItens": 8,
+    "totalPaginas": 1
+  },
+  "destinos": [
+    {
+      "cidade": "Porto Seguro",
+      "estado": "BA"
+    }
+  ],
+  "detalhe": {
+    "estabelecimento": {
+      "id": "ad1beea3-b752-4337-a0e6-d10695868987",
+      "nome": "Pousada Brisa do Descobrimento",
+      "tipo": "POUSADA",
+      "cidade": "Porto Seguro",
+      "estado": "BA",
+      "fotoUrl": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7ac38385-6174-459f-b445-16fd1eb591ab.png",
+      "fotoTextoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+      "necessidadesAtendidas": [
+        {
+          "id": 1,
+          "codigo": "MOBILIDADE_REDUZIDA",
+          "descricao": "Mobilidade reduzida ou deficiência física"
+        },
+        {
+          "id": 2,
+          "codigo": "DEFICIENCIA_VISUAL",
+          "descricao": "Deficiência visual"
+        },
+        {
+          "id": 3,
+          "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+          "descricao": "Deficiência auditiva ou sensorial"
+        }
+      ],
+      "notaMedia": 4.69,
+      "totalAvaliacoes": 10,
+      "seloVerificado": true,
+      "destaque": false,
+      "distanciaKm": null
+    },
+    "ficha": [
+      {
+        "categoria": {
+          "id": 1,
+          "codigo": "ACESSO_EXTERNO",
+          "descricao": "Acesso externo"
+        },
+        "itens": [
+          {
+            "campoId": 9,
+            "codigo": "VAGA_RESERVADA",
+            "rotulo": "Vaga de estacionamento reservada",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.604406Z"
+          },
+          {
+            "campoId": 10,
+            "codigo": "ENTRADA_SEM_DEGRAUS",
+            "rotulo": "Entrada sem degraus ou com rampa",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.604939Z"
+          },
+          {
+            "campoId": 11,
+            "codigo": "RAMPA_INCLINACAO",
+            "rotulo": "Inclinação da rampa de acesso",
+            "tipoValor": "NUMERO",
+            "valor": "8.33",
+            "unidade": "%",
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.605747Z"
+          },
+          {
+            "campoId": 12,
+            "codigo": "PORTA_ENTRADA_LARGURA",
+            "rotulo": "Largura livre da porta de entrada",
+            "tipoValor": "NUMERO",
+            "valor": "90",
+            "unidade": "cm",
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.606205Z"
+          },
+          {
+            "campoId": 19,
+            "codigo": "PISO_TATIL_EXTERNO",
+            "rotulo": "Piso tátil na rota de acesso",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.605363Z"
+          }
+        ]
+      },
+      {
+        "categoria": {
+          "id": 2,
+          "codigo": "CIRCULACAO_INTERNA",
+          "descricao": "Circulação interna"
+        },
+        "itens": [
+          {
+            "campoId": 5,
+            "codigo": "ELEVADOR",
+            "rotulo": "Elevador ou plataforma elevatória",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.636438Z"
+          },
+          {
+            "campoId": 6,
+            "codigo": "PORTAS_INTERNAS_LARGURA",
+            "rotulo": "Largura livre das portas internas",
+            "tipoValor": "NUMERO",
+            "valor": "85",
+            "unidade": "cm",
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.639487Z"
+          },
+          {
+            "campoId": 7,
+            "codigo": "ROTA_SEM_OBSTACULOS",
+            "rotulo": "Rota interna sem obstáculos",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.637311Z"
+          },
+          {
+            "campoId": 8,
+            "codigo": "AREA_ADAPTADA",
+            "rotulo": "Quarto ou área de uso adaptada",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.637971Z"
+          },
+          {
+            "campoId": 18,
+            "codigo": "PISO_TATIL_INTERNO",
+            "rotulo": "Piso tátil interno",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.638674Z"
+          }
+        ]
+      },
+      {
+        "categoria": {
+          "id": 3,
+          "codigo": "SANITARIOS",
+          "descricao": "Sanitários"
+        },
+        "itens": [
+          {
+            "campoId": 1,
+            "codigo": "BANHEIRO_ACESSIVEL",
+            "rotulo": "Banheiro acessível",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.668955Z"
+          },
+          {
+            "campoId": 2,
+            "codigo": "BARRAS_APOIO",
+            "rotulo": "Barras de apoio",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.670070Z"
+          },
+          {
+            "campoId": 3,
+            "codigo": "AREA_GIRO",
+            "rotulo": "Área de giro de 1,50 m",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.670882Z"
+          },
+          {
+            "campoId": 4,
+            "codigo": "BANCO_BANHO",
+            "rotulo": "Banco de banho",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.671577Z"
+          },
+          {
+            "campoId": 23,
+            "codigo": "ALARME_SANITARIO",
+            "rotulo": "Alarme de emergência no sanitário",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.672178Z"
+          }
+        ]
+      },
+      {
+        "categoria": {
+          "id": 4,
+          "codigo": "SINALIZACAO",
+          "descricao": "Sinalização"
+        },
+        "itens": [
+          {
+            "campoId": 15,
+            "codigo": "SINALIZACAO_BRAILLE",
+            "rotulo": "Sinalização em braille",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.701934Z"
+          },
+          {
+            "campoId": 16,
+            "codigo": "MAPA_TATIL",
+            "rotulo": "Mapa tátil",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.703117Z"
+          },
+          {
+            "campoId": 17,
+            "codigo": "CONTRASTE_VISUAL",
+            "rotulo": "Contraste visual em degraus e portas",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.703969Z"
+          },
+          {
+            "campoId": 22,
+            "codigo": "ALARME_LUMINOSO",
+            "rotulo": "Alarme de emergência luminoso",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.704825Z"
+          }
+        ]
+      },
+      {
+        "categoria": {
+          "id": 5,
+          "codigo": "ATENDIMENTO",
+          "descricao": "Atendimento"
+        },
+        "itens": [
+          {
+            "campoId": 13,
+            "codigo": "CARDAPIO_ACESSIVEL",
+            "rotulo": "Cardápio ou informações em braille ou digital acessível",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.730677Z"
+          },
+          {
+            "campoId": 14,
+            "codigo": "CAO_GUIA",
+            "rotulo": "Aceita cão-guia",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.731478Z"
+          },
+          {
+            "campoId": 20,
+            "codigo": "ATENDIMENTO_LIBRAS",
+            "rotulo": "Atendimento em Libras",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.732104Z"
+          },
+          {
+            "campoId": 21,
+            "codigo": "ATENDIMENTO_TEXTO",
+            "rotulo": "Atendimento por mensagem de texto",
+            "tipoValor": "SIM_NAO",
+            "valor": "SIM",
+            "unidade": null,
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "atualizadoEm": "2026-11-22T17:16:13.733042Z"
+          }
+        ]
+      }
+    ],
+    "fotos": [
+      {
+        "id": "44f6d3a1-e308-4c05-a36d-ff87eded949a",
+        "categoriaId": 1,
+        "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7ac38385-6174-459f-b445-16fd1eb591ab.png",
+        "textoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+        "status": "PUBLICADO",
+        "criadaEm": "2026-11-22T17:15:59.727602Z"
+      },
+      {
+        "id": "d6e42395-bcb7-4bb8-94f4-dc1c17e2ca1a",
+        "categoriaId": 2,
+        "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/13cf624f-c5da-4f42-8b8d-08f75e806de6.png",
+        "textoAlternativo": "Imagem ilustrativa de demonstração: faixas verdes representando a circulação interna",
+        "status": "PUBLICADO",
+        "criadaEm": "2026-11-22T17:15:59.829481Z"
+      },
+      {
+        "id": "80d7da63-acb7-4800-8bd3-c22f43404695",
+        "categoriaId": 3,
+        "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/17fe9abb-61cb-4c18-b584-30caad62d94a.png",
+        "textoAlternativo": "Imagem ilustrativa de demonstração: faixas roxas representando o banheiro acessível",
+        "status": "PUBLICADO",
+        "criadaEm": "2026-11-22T17:15:59.893876Z"
+      },
+      {
+        "id": "eefdd297-aebf-46a3-a302-476d2d84cd50",
+        "categoriaId": 4,
+        "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/4b7f894d-c847-4923-adee-7d4995233da3.png",
+        "textoAlternativo": "Imagem ilustrativa de demonstração: faixas laranja representando a sinalização",
+        "status": "PUBLICADO",
+        "criadaEm": "2026-11-22T17:15:59.959854Z"
+      },
+      {
+        "id": "fc98db95-26e3-480c-a5cb-0e141806f616",
+        "categoriaId": 5,
+        "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7567eb62-bacb-48c6-8400-3d461fc50fb9.png",
+        "textoAlternativo": "Imagem ilustrativa de demonstração: faixas vermelhas representando o atendimento",
+        "status": "PUBLICADO",
+        "criadaEm": "2026-11-22T17:16:00.020122Z"
+      }
+    ]
+  },
+  "avaliacoesPublicas": {
+    "itens": [
+      {
+        "id": "ea810223-31c2-4189-bddb-423e7e9f5f4a",
+        "nota": 4,
+        "texto": "O alarme luminoso me deixou mais segura durante a estadia.",
+        "dataVisita": "2026-09-28",
+        "criadaEm": "2026-11-22T17:16:07.711953Z"
+      },
+      {
+        "id": "e4936e4f-84e8-4aac-94a0-ed6bfc1b71a7",
+        "nota": 5,
+        "texto": "Consegui circular sozinho em todas as áreas comuns. Experiência ótima.",
+        "dataVisita": "2026-10-03",
+        "criadaEm": "2026-11-22T17:16:07.688199Z"
+      },
+      {
+        "id": "a3642cf7-878e-4b80-ab1e-4b68525de2eb",
+        "nota": 5,
+        "texto": "Equipe atenciosa e ambiente tranquilo. Recomendo para famílias com PcD.",
+        "dataVisita": "2026-10-08",
+        "criadaEm": "2026-11-22T17:16:07.655974Z"
+      },
+      {
+        "id": "ad740628-a3e8-4380-b14a-6d3c027445ab",
+        "nota": 4,
+        "texto": "Elevador funcionando e corredores livres. Tudo como descrito.",
+        "dataVisita": "2026-10-13",
+        "criadaEm": "2026-11-22T17:16:07.622798Z"
+      },
+      {
+        "id": "9c94074c-af65-44e7-bffc-c0a29620b803",
+        "nota": 5,
+        "texto": "Piso tátil bem conservado e placas em braille nas portas dos quartos.",
+        "dataVisita": "2026-10-18",
+        "criadaEm": "2026-11-22T17:16:07.588350Z"
+      },
+      {
+        "id": "ce6116f0-4b78-4eb6-b50d-57583de19d95",
+        "nota": 5,
+        "texto": "Atendimento por mensagem funcionou muito bem para mim, que sou surda.",
+        "dataVisita": "2026-10-23",
+        "criadaEm": "2026-11-22T17:16:07.556976Z"
+      },
+      {
+        "id": "57ddd984-dc05-45fb-b640-d3bcb56a2794",
+        "nota": 4,
+        "texto": "Fui com meu cão-guia e fomos muito bem recebidos do começo ao fim.",
+        "dataVisita": "2026-10-28",
+        "criadaEm": "2026-11-22T17:16:07.523499Z"
+      }
+    ],
+    "pagina": 0,
+    "tamanho": 10,
+    "totalItens": 13,
+    "totalPaginas": 2
+  },
+  "viajanteNecessidades": [
+    {
+      "id": 2,
+      "codigo": "DEFICIENCIA_VISUAL",
+      "descricao": "Deficiência visual"
+    }
+  ],
+  "favoritos": [],
+  "minhasAvaliacoes": [
+    {
+      "id": "fdf62003-b4aa-4939-8b58-55e33008f9d3",
+      "estabelecimentoId": "89f4b1fa-bae1-4793-8353-648e02a42938",
+      "nota": 3,
+      "texto": "A equipe foi gentil, porém faltou sinalização tátil em alguns pontos.",
+      "dataVisita": "2026-10-22",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.922145Z",
+      "atualizadaEm": "2026-11-22T17:16:08.922148Z"
+    },
+    {
+      "id": "59bbaa1d-0555-455b-92bd-19ea66ad36fc",
+      "estabelecimentoId": "b4f1a24e-d1c5-49fa-9958-b4debe843014",
+      "nota": 4,
+      "texto": "Elevador funcionando e corredores livres. Tudo como descrito.",
+      "dataVisita": "2026-10-25",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.838629Z",
+      "atualizadaEm": "2026-11-22T17:16:08.838632Z"
+    },
+    {
+      "id": "80d48528-a957-4976-9fe9-df2406e69135",
+      "estabelecimentoId": "6735deb1-f067-4fca-b7e4-19ade29afbaa",
+      "nota": 4,
+      "texto": "Piso tátil bem conservado e placas em braille nas portas dos quartos.",
+      "dataVisita": "2026-10-28",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.709887Z",
+      "atualizadaEm": "2026-11-22T17:16:08.709891Z"
+    },
+    {
+      "id": "56b2c6b0-53f8-433b-bc43-6b2db08d1b2e",
+      "estabelecimentoId": "e3620cb4-6934-4645-881e-ca556214b3c1",
+      "nota": 4,
+      "texto": "Atendimento por mensagem funcionou muito bem para mim, que sou surda.",
+      "dataVisita": "2026-10-31",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.289652Z",
+      "atualizadaEm": "2026-11-22T17:16:08.289657Z"
+    },
+    {
+      "id": "ad874d61-b725-45ec-b7e5-de2017481150",
+      "estabelecimentoId": "9944e4b7-76bc-4d67-b35d-8ed79c782d7b",
+      "nota": 4,
+      "texto": "Fui com meu cão-guia e fomos muito bem recebidos do começo ao fim.",
+      "dataVisita": "2026-11-03",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.158667Z",
+      "atualizadaEm": "2026-11-22T17:16:08.158672Z"
+    },
+    {
+      "id": "7652b03d-84f5-42e0-9cd9-5a5c5ce04800",
+      "estabelecimentoId": "2a1e38c9-33b9-4c17-adf5-02db47593aa4",
+      "nota": 4,
+      "texto": "A ficha bate com a realidade: medidas corretas e fotos fiéis ao lugar.",
+      "dataVisita": "2026-11-06",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:08.010294Z",
+      "atualizadaEm": "2026-11-22T17:16:08.010301Z"
+    },
+    {
+      "id": "13239be7-1352-4d0c-b7c3-e4c62b07a864",
+      "estabelecimentoId": "9adea780-8cbc-49eb-9f42-3fce82f33c7b",
+      "nota": 4,
+      "texto": "Banheiro amplo de verdade, deu para girar a cadeira de rodas sem dificuldade.",
+      "dataVisita": "2026-11-09",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:07.744440Z",
+      "atualizadaEm": "2026-11-22T17:16:07.744443Z"
+    },
+    {
+      "id": "aef434e6-a53b-4677-8e62-fe3112504d66",
+      "estabelecimentoId": "ad1beea3-b752-4337-a0e6-d10695868987",
+      "nota": 4,
+      "texto": "A rampa da entrada é suave e a equipe ajudou sem a gente precisar pedir. Voltaria com certeza.",
+      "dataVisita": "2026-11-12",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:07.365111Z",
+      "atualizadaEm": "2026-11-22T17:16:07.365117Z"
+    }
+  ],
+  "roteiros": [
+    {
+      "id": "141f1c19-1582-4219-9f28-e8bacc02f24f",
+      "destino": "Porto Seguro/BA",
+      "dataInicio": "2026-11-22",
+      "dataFim": "2026-11-22",
+      "totalItens": 1,
+      "criadoEm": "2026-11-22T17:38:27.557152Z"
+    }
+  ],
+  "roteiro": {
+    "id": "141f1c19-1582-4219-9f28-e8bacc02f24f",
+    "destino": "Porto Seguro/BA",
+    "dataInicio": "2026-11-22",
+    "dataFim": "2026-11-22",
+    "provedor": "simulado",
+    "criadoEm": "2026-11-22T17:38:27.557152Z",
+    "dias": [
+      {
+        "dia": 1,
+        "data": "2026-11-22",
+        "itens": [
+          {
+            "ordem": 1,
+            "estabelecimentoId": "ad1beea3-b752-4337-a0e6-d10695868987",
+            "nome": "Pousada Brisa do Descobrimento",
+            "tipo": "POUSADA",
+            "cidade": "Porto Seguro",
+            "estado": "BA",
+            "disponivel": true,
+            "observacao": "Sugestão gerada automaticamente (provedor simulado)."
+          }
+        ]
+      }
+    ]
+  },
+  "parceiroFicha": [
+    {
+      "categoria": {
+        "id": 1,
+        "codigo": "ACESSO_EXTERNO",
+        "descricao": "Acesso externo"
+      },
+      "itens": [
+        {
+          "campoId": 9,
+          "codigo": "VAGA_RESERVADA",
+          "rotulo": "Vaga de estacionamento reservada",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.604406Z"
+        },
+        {
+          "campoId": 10,
+          "codigo": "ENTRADA_SEM_DEGRAUS",
+          "rotulo": "Entrada sem degraus ou com rampa",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.604939Z"
+        },
+        {
+          "campoId": 11,
+          "codigo": "RAMPA_INCLINACAO",
+          "rotulo": "Inclinação da rampa de acesso",
+          "tipoValor": "NUMERO",
+          "valor": "8.33",
+          "unidade": "%",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.605747Z"
+        },
+        {
+          "campoId": 12,
+          "codigo": "PORTA_ENTRADA_LARGURA",
+          "rotulo": "Largura livre da porta de entrada",
+          "tipoValor": "NUMERO",
+          "valor": "90",
+          "unidade": "cm",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.606205Z"
+        },
+        {
+          "campoId": 19,
+          "codigo": "PISO_TATIL_EXTERNO",
+          "rotulo": "Piso tátil na rota de acesso",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.605363Z"
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 2,
+        "codigo": "CIRCULACAO_INTERNA",
+        "descricao": "Circulação interna"
+      },
+      "itens": [
+        {
+          "campoId": 5,
+          "codigo": "ELEVADOR",
+          "rotulo": "Elevador ou plataforma elevatória",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.636438Z"
+        },
+        {
+          "campoId": 6,
+          "codigo": "PORTAS_INTERNAS_LARGURA",
+          "rotulo": "Largura livre das portas internas",
+          "tipoValor": "NUMERO",
+          "valor": "85",
+          "unidade": "cm",
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.639487Z"
+        },
+        {
+          "campoId": 7,
+          "codigo": "ROTA_SEM_OBSTACULOS",
+          "rotulo": "Rota interna sem obstáculos",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.637311Z"
+        },
+        {
+          "campoId": 8,
+          "codigo": "AREA_ADAPTADA",
+          "rotulo": "Quarto ou área de uso adaptada",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.637971Z"
+        },
+        {
+          "campoId": 18,
+          "codigo": "PISO_TATIL_INTERNO",
+          "rotulo": "Piso tátil interno",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.638674Z"
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 3,
+        "codigo": "SANITARIOS",
+        "descricao": "Sanitários"
+      },
+      "itens": [
+        {
+          "campoId": 1,
+          "codigo": "BANHEIRO_ACESSIVEL",
+          "rotulo": "Banheiro acessível",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.668955Z"
+        },
+        {
+          "campoId": 2,
+          "codigo": "BARRAS_APOIO",
+          "rotulo": "Barras de apoio",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.670070Z"
+        },
+        {
+          "campoId": 3,
+          "codigo": "AREA_GIRO",
+          "rotulo": "Área de giro de 1,50 m",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.670882Z"
+        },
+        {
+          "campoId": 4,
+          "codigo": "BANCO_BANHO",
+          "rotulo": "Banco de banho",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.671577Z"
+        },
+        {
+          "campoId": 23,
+          "codigo": "ALARME_SANITARIO",
+          "rotulo": "Alarme de emergência no sanitário",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.672178Z"
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 4,
+        "codigo": "SINALIZACAO",
+        "descricao": "Sinalização"
+      },
+      "itens": [
+        {
+          "campoId": 15,
+          "codigo": "SINALIZACAO_BRAILLE",
+          "rotulo": "Sinalização em braille",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.701934Z"
+        },
+        {
+          "campoId": 16,
+          "codigo": "MAPA_TATIL",
+          "rotulo": "Mapa tátil",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.703117Z"
+        },
+        {
+          "campoId": 17,
+          "codigo": "CONTRASTE_VISUAL",
+          "rotulo": "Contraste visual em degraus e portas",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.703969Z"
+        },
+        {
+          "campoId": 22,
+          "codigo": "ALARME_LUMINOSO",
+          "rotulo": "Alarme de emergência luminoso",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.704825Z"
+        }
+      ]
+    },
+    {
+      "categoria": {
+        "id": 5,
+        "codigo": "ATENDIMENTO",
+        "descricao": "Atendimento"
+      },
+      "itens": [
+        {
+          "campoId": 13,
+          "codigo": "CARDAPIO_ACESSIVEL",
+          "rotulo": "Cardápio ou informações em braille ou digital acessível",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.730677Z"
+        },
+        {
+          "campoId": 14,
+          "codigo": "CAO_GUIA",
+          "rotulo": "Aceita cão-guia",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.731478Z"
+        },
+        {
+          "campoId": 20,
+          "codigo": "ATENDIMENTO_LIBRAS",
+          "rotulo": "Atendimento em Libras",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.732104Z"
+        },
+        {
+          "campoId": 21,
+          "codigo": "ATENDIMENTO_TEXTO",
+          "rotulo": "Atendimento por mensagem de texto",
+          "tipoValor": "SIM_NAO",
+          "valor": "SIM",
+          "unidade": null,
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          },
+          "atualizadoEm": "2026-11-22T17:16:13.733042Z"
+        }
+      ]
+    }
+  ],
+  "parceiroFotos": [
+    {
+      "id": "44f6d3a1-e308-4c05-a36d-ff87eded949a",
+      "categoriaId": 1,
+      "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7ac38385-6174-459f-b445-16fd1eb591ab.png",
+      "textoAlternativo": "Imagem ilustrativa de demonstração: faixas azuis representando a entrada acessível",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:15:59.727602Z"
+    },
+    {
+      "id": "d6e42395-bcb7-4bb8-94f4-dc1c17e2ca1a",
+      "categoriaId": 2,
+      "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/13cf624f-c5da-4f42-8b8d-08f75e806de6.png",
+      "textoAlternativo": "Imagem ilustrativa de demonstração: faixas verdes representando a circulação interna",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:15:59.829481Z"
+    },
+    {
+      "id": "80d7da63-acb7-4800-8bd3-c22f43404695",
+      "categoriaId": 3,
+      "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/17fe9abb-61cb-4c18-b584-30caad62d94a.png",
+      "textoAlternativo": "Imagem ilustrativa de demonstração: faixas roxas representando o banheiro acessível",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:15:59.893876Z"
+    },
+    {
+      "id": "eefdd297-aebf-46a3-a302-476d2d84cd50",
+      "categoriaId": 4,
+      "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/4b7f894d-c847-4923-adee-7d4995233da3.png",
+      "textoAlternativo": "Imagem ilustrativa de demonstração: faixas laranja representando a sinalização",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:15:59.959854Z"
+    },
+    {
+      "id": "fc98db95-26e3-480c-a5cb-0e141806f616",
+      "categoriaId": 5,
+      "url": "http://localhost:8080/arquivos/estabelecimentos/ad1beea3-b752-4337-a0e6-d10695868987/7567eb62-bacb-48c6-8400-3d461fc50fb9.png",
+      "textoAlternativo": "Imagem ilustrativa de demonstração: faixas vermelhas representando o atendimento",
+      "status": "PUBLICADO",
+      "criadaEm": "2026-11-22T17:16:00.020122Z"
+    }
+  ],
+  "onboarding": {
+    "categorias": [
+      {
+        "categoria": {
+          "id": 1,
+          "codigo": "ACESSO_EXTERNO",
+          "descricao": "Acesso externo"
+        },
+        "preenchida": true
+      },
+      {
+        "categoria": {
+          "id": 2,
+          "codigo": "CIRCULACAO_INTERNA",
+          "descricao": "Circulação interna"
+        },
+        "preenchida": true
+      },
+      {
+        "categoria": {
+          "id": 3,
+          "codigo": "SANITARIOS",
+          "descricao": "Sanitários"
+        },
+        "preenchida": true
+      },
+      {
+        "categoria": {
+          "id": 4,
+          "codigo": "SINALIZACAO",
+          "descricao": "Sinalização"
+        },
+        "preenchida": true
+      },
+      {
+        "categoria": {
+          "id": 5,
+          "codigo": "ATENDIMENTO",
+          "descricao": "Atendimento"
+        },
+        "preenchida": true
+      }
+    ],
+    "fotosPublicadas": 5,
+    "requisitosAtendidos": true,
+    "concluido": true
+  },
+  "premium": {
+    "progresso": {
+      "avaliacoesPositivas": 13,
+      "minimo": 10,
+      "faltam": 0,
+      "notaMinima": 4
+    },
+    "seloVerificado": true,
+    "elegivel": true,
+    "planoPremium": false,
+    "assinatura": null,
+    "beneficios": [
+      "Selo de Acessibilidade Verificada em destaque no perfil",
+      "Destaque na listagem padrão do catálogo",
+      "Perfil enriquecido para os viajantes"
+    ]
+  },
+  "metricas": {
+    "inicio": "2026-10-24",
+    "fim": "2026-11-22",
+    "totais": {
+      "visitasPerfil": 6,
+      "favoritos": 3,
+      "novasAvaliacoes": 13
+    },
+    "dias": [
+      {
+        "data": "2026-10-24",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-25",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-26",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-27",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-28",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-29",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-30",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-10-31",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-01",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-02",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-03",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-04",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-05",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-06",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-07",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-08",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-09",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-10",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-11",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-12",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-13",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-14",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-15",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-16",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-17",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-18",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-19",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-20",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-21",
+        "visitasPerfil": 0,
+        "favoritos": 0,
+        "novasAvaliacoes": 0
+      },
+      {
+        "data": "2026-11-22",
+        "visitasPerfil": 6,
+        "favoritos": 3,
+        "novasAvaliacoes": 13
+      }
+    ]
+  },
+  "notificacoes": {
+    "itens": [
+      {
+        "id": "dfa7f922-f349-49fe-a8ff-7b87fd4045ca",
+        "tipo": "ELEGIBILIDADE_SELO",
+        "mensagem": "Parabéns! Seu estabelecimento atingiu o mínimo de avaliações positivas e recebeu o Selo de Acessibilidade Verificada. Agora você pode contratar o Plano Premium.",
+        "lida": false,
+        "criadaEm": "2026-11-22T17:16:07.725368Z"
+      }
+    ],
+    "pagina": 0,
+    "tamanho": 20,
+    "totalItens": 1,
+    "totalPaginas": 1,
+    "naoLidas": 1
+  }
+}
