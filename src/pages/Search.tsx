@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowRight, Route, Search as SearchIcon, SlidersHorizontal, X } from 'lucide-react'
+import { ArrowRight, ChartColumn, Route, Search as SearchIcon, SlidersHorizontal, X } from 'lucide-react'
 import { MODO_NECESSIDADES, catalogo, type Busca } from '../api/endpoints'
 import type { CardEstabelecimento, TipoEstabelecimento } from '../api/types'
 import { useApi } from '../api/useApi'
@@ -122,6 +122,20 @@ export function Inicio() {
         <span className="flex-1">
           <span className="block font-bold text-ink">Montar roteiro acessível</span>
           <span className="block text-[0.9375rem] text-ink-2">Sugestões geradas só com lugares do catálogo.</span>
+        </span>
+        <ArrowRight aria-hidden className="size-5 text-brand" />
+      </Link>
+
+      <Link
+        to="/panorama"
+        className="mt-3 flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-canvas p-4 no-underline hover:border-brand"
+      >
+        <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
+          <ChartColumn aria-hidden className="size-6" />
+        </span>
+        <span className="flex-1">
+          <span className="block font-bold text-ink">Panorama da acessibilidade</span>
+          <span className="block text-[0.9375rem] text-ink-2">Quantos lugares atendem a cada necessidade em cada destino.</span>
         </span>
         <ArrowRight aria-hidden className="size-5 text-brand" />
       </Link>
