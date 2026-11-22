@@ -1,5 +1,6 @@
-import { useId, useMemo, useState, type KeyboardEvent } from 'react'
+import { useEffect, useId, useMemo, useState, type KeyboardEvent } from 'react'
 import { MapPin } from 'lucide-react'
+import { catalogo } from '../api/endpoints'
 import { cx } from './ui'
 
 /**
@@ -136,4 +137,32 @@ export function Combobox({
       </p>
     </div>
   )
+}
+
+/** "Porto Seguro, BA" → { cidade: "Porto Seguro", estado: "BA" }. Sem UF reconhecível, tudo vira cidade. */
+// eslint-disable-next-line react-refresh/only-export-components
+export function parseDestino(v: string): { cidade: string; estado?: string } {
+  const m = v.trim().match(/^(.*?),\s*([A-Za-z]{2})$/)
+  return m ? { cidade: m[1].trim(), estado: m[2].toUpperCase() } : { cidade: v.trim() }
+}
+
+/** Combobox de destinos com sugestões do catálogo (RF04): mínimo de 2 letras, consulta com atraso curto. */
+export function DestinoCombobox(props: { label: string; hint?: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+  const [options, setOptions] = useState<string[]>([])
+  const q = props.value.trim()
+  useEffect(() => {
+    if (q.length < 2 || /,\s*[A-Za-z]{2}$/.test(q)) return
+    const ctrl = new AbortController()
+    const t = window.setTimeout(() => {
+      catalogo.destinos(q, ctrl.signal).then(
+        (ds) => setOptions(ds.map((d) => `${d.cidade}, ${d.estado}`)),
+        () => undefined,
+      )
+    }, 250)
+    return () => {
+      window.clearTimeout(t)
+      ctrl.abort()
+    }
+  }, [q])
+  return <Combobox {...props} options={q.length < 2 ? [] : options} />
 }

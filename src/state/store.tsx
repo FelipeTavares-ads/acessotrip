@@ -1,12 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { REVIEWS } from '../data/places'
-import type { NeedId, Review } from '../data/types'
-
-interface Traveler {
-  nome: string
-  email: string
-  necessidades: NeedId[]
-}
+import { useNavigate } from 'react-router-dom'
+import { mensagemDeErro } from '../api/client'
+import { viajante } from '../api/endpoints'
+import type { Uuid } from '../api/types'
+import { useSession } from './session'
 
 interface Toast {
   id: number
@@ -14,51 +11,28 @@ interface Toast {
 }
 
 interface Store {
-  traveler: Traveler | null
-  signIn: (t: Traveler) => void
-  signOut: () => void
-  setNeeds: (n: NeedId[]) => void
-  favorites: string[]
-  toggleFavorite: (placeId: string) => boolean
-  reviews: Review[]
-  addReview: (r: Review) => void
-  reported: string[]
-  report: (reviewId: string) => void
+  /** Ids dos estabelecimentos favoritos do viajante logado (vazio para os demais). */
+  favorites: Set<Uuid>
+  /** Alterna o favorito; pede login se necessário. Devolve o novo estado, ou null se não mudou. */
+  toggleFavorite: (id: Uuid, nome: string) => Promise<boolean | null>
+  /** Códigos das necessidades do perfil do viajante logado (vazio para os demais). */
+  minhasNecessidades: string[]
+  /** false enquanto favoritos e necessidades do viajante logado ainda estão chegando da API. */
+  perfilPronto: boolean
+  setMinhasNecessidades: (codigos: string[]) => void
   toast: Toast | null
   notify: (text: string) => void
 }
 
 const Ctx = createContext<Store | null>(null)
 
-function load<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key)
-    return raw ? (JSON.parse(raw) as T) : fallback
-  } catch {
-    return fallback
-  }
-}
-function save(key: string, value: unknown) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value))
-  } catch {
-    /* armazenamento indisponível: segue em memória */
-  }
-}
-
-const DEMO_TRAVELER: Traveler = { nome: 'Renata', email: 'viajante@exemplo.com', necessidades: ['mobilidade'] }
-
+/** Precisa estar dentro do BrowserRouter (usa navegação para pedir login). */
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [traveler, setTraveler] = useState<Traveler | null>(() => load('at.traveler', DEMO_TRAVELER))
-  const [favorites, setFavorites] = useState<string[]>(() => load('at.favorites', ['fazenda-solar']))
-  const [ownReviews, setOwnReviews] = useState<Review[]>(() => load('at.reviews', []))
-  const [reported, setReported] = useState<string[]>(() => load('at.reported', []))
+  const { usuario } = useSession()
+  const nav = useNavigate()
   const [toast, setToast] = useState<Toast | null>(null)
-
-  useEffect(() => save('at.traveler', traveler), [traveler])
-  useEffect(() => save('at.favorites', favorites), [favorites])
-  useEffect(() => save('at.reviews', ownReviews), [ownReviews])
-  useEffect(() => save('at.reported', reported), [reported])
+  // Dados do viajante, marcados com o id do dono: ao trocar de conta, o que é de outra conta é ignorado
+  const [dados, setDados] = useState<{ uid: Uuid; fav: Set<Uuid>; nec: string[] } | null>(null)
 
   const notify = useCallback((text: string) => {
     const id = Date.now()
@@ -66,28 +40,58 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     window.setTimeout(() => setToast((t) => (t?.id === id ? null : t)), 5000)
   }, [])
 
-  const value = useMemo<Store>(
-    () => ({
-      traveler,
-      signIn: setTraveler,
-      signOut: () => setTraveler(null),
-      setNeeds: (n) => setTraveler((t) => (t ? { ...t, necessidades: n } : { ...DEMO_TRAVELER, necessidades: n })),
-      favorites,
-      toggleFavorite: (id) => {
-        const willAdd = !favorites.includes(id)
-        setFavorites((f) => (willAdd ? [...f, id] : f.filter((x) => x !== id)))
-        return willAdd
-      },
-      reviews: [...ownReviews, ...REVIEWS],
-      addReview: (r) => setOwnReviews((rs) => [r, ...rs]),
-      reported,
-      report: (id) => setReported((r) => (r.includes(id) ? r : [...r, id])),
-      toast,
-      notify,
-    }),
-    [traveler, favorites, ownReviews, reported, toast, notify],
+  const isViajante = usuario?.perfil === 'VIAJANTE'
+  const uid = isViajante ? usuario.id : null
+  useEffect(() => {
+    if (!uid) return
+    Promise.all([viajante.favoritos().catch(() => []), viajante.necessidades().catch(() => [])]).then(([fs, ns]) =>
+      setDados({ uid, fav: new Set(fs.map((f) => f.estabelecimentoId)), nec: ns.map((n) => n.codigo) }),
+    )
+  }, [uid])
+  const meus = uid && dados?.uid === uid ? dados : null
+  const favorites = useMemo(() => meus?.fav ?? new Set<Uuid>(), [meus])
+  const minhasNecessidades = useMemo(() => meus?.nec ?? [], [meus])
+  const perfilPronto = !uid || !!meus
+  const setFavorites = useCallback(
+    (fn: (f: Set<Uuid>) => Set<Uuid>) => setDados((d) => (d && d.uid === uid ? { ...d, fav: fn(d.fav) } : d)),
+    [uid],
+  )
+  const setMinhasNecessidades = useCallback(
+    (nec: string[]) => setDados((d) => (d && d.uid === uid ? { ...d, nec } : d)),
+    [uid],
   )
 
+  const toggleFavorite = useCallback(
+    async (id: Uuid, nome: string) => {
+      if (!isViajante) {
+        notify('Entre com sua conta de viajante para salvar favoritos.')
+        nav(`/entrar?volta=${encodeURIComponent(location.pathname + location.search)}`)
+        return null
+      }
+      const add = !favorites.has(id)
+      try {
+        if (add) await viajante.favoritar(id)
+        else await viajante.desfavoritar(id)
+        setFavorites((f) => {
+          const n = new Set(f)
+          if (add) n.add(id)
+          else n.delete(id)
+          return n
+        })
+        notify(add ? `${nome} salvo nos favoritos.` : `${nome} removido dos favoritos.`)
+        return add
+      } catch (e) {
+        notify(mensagemDeErro(e))
+        return null
+      }
+    },
+    [isViajante, favorites, notify, nav, setFavorites],
+  )
+
+  const value = useMemo<Store>(
+    () => ({ favorites, toggleFavorite, minhasNecessidades, perfilPronto, setMinhasNecessidades, toast, notify }),
+    [favorites, toggleFavorite, minhasNecessidades, perfilPronto, setMinhasNecessidades, toast, notify],
+  )
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
 

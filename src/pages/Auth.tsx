@@ -1,13 +1,16 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, MailCheck } from 'lucide-react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Eye, EyeOff } from 'lucide-react'
+import { ApiError, mensagemDeErro } from '../api/client'
 import { ErrorSummary } from '../components/ErrorSummary'
-import { Button, TextField } from '../components/ui'
+import { Button, Notice, TextField } from '../components/ui'
+import { rotaInicial, useSession } from '../state/session'
 import { useStore } from '../state/store'
 
-const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+// eslint-disable-next-line react-refresh/only-export-components
+export const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 
-function AuthFrame({ title, lead, children, foot }: { title: string; lead?: string; children: ReactNode; foot?: ReactNode }) {
+export function AuthFrame({ title, lead, children, foot }: { title: string; lead?: string; children: ReactNode; foot?: ReactNode }) {
   return (
     <div className="mx-auto max-w-md px-4 py-10 md:py-16">
       <h1 className="text-[1.875rem] font-bold leading-tight text-ink outline-none">{title}</h1>
@@ -18,7 +21,7 @@ function AuthFrame({ title, lead, children, foot }: { title: string; lead?: stri
   )
 }
 
-function PasswordField({
+export function PasswordField({
   id,
   label,
   value,
@@ -43,6 +46,7 @@ function PasswordField({
       hint={hint}
       type={show ? 'text' : 'password'}
       autoComplete={autoComplete}
+      maxLength={72}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       error={error}
@@ -61,24 +65,49 @@ function PasswordField({
   )
 }
 
+/** Junta erros locais com os erros devolvidos pela API (por campo ou geral). */
+// eslint-disable-next-line react-refresh/only-export-components
+export function useServerErrors() {
+  const [server, setServer] = useState<Record<string, string>>({})
+  const capture = (e: unknown, campoConflito?: string) => {
+    if (e instanceof ApiError && e.erros.length) setServer(e.porCampo())
+    else if (e instanceof ApiError && e.status === 409 && campoConflito) setServer({ [campoConflito]: e.message })
+    else setServer({ geral: mensagemDeErro(e) })
+  }
+  return { server, setServer, capture }
+}
+
 export function Cadastro() {
   const nav = useNavigate()
-  const { signIn, notify } = useStore()
+  const { cadastrarViajante } = useSession()
+  const { notify } = useStore()
   const [f, setF] = useState({ nome: '', email: '', senha: '' })
   const [attempt, setAttempt] = useState(0)
-  const errors = {
+  const [sending, setSending] = useState(false)
+  const { server, setServer, capture } = useServerErrors()
+  const local = {
     nome: !f.nome.trim() ? 'Informe seu nome.' : undefined,
     email: !emailOk(f.email) ? 'Informe um e-mail válido, como nome@exemplo.com.' : undefined,
     senha: f.senha.length < 8 ? 'A senha precisa ter pelo menos 8 caracteres.' : undefined,
   }
+  const errors = { ...local, ...server }
   const show = attempt > 0
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
+    setServer({})
     setAttempt((a) => a + 1)
-    if (Object.values(errors).some(Boolean)) return
-    signIn({ nome: f.nome.trim().split(' ')[0], email: f.email, necessidades: [] })
-    notify('Conta criada. Agora conte o que você precisa.')
-    nav('/perfil/necessidades?primeiro=1')
+    if (Object.values(local).some(Boolean)) return
+    setSending(true)
+    try {
+      await cadastrarViajante(f.nome.trim(), f.email.trim(), f.senha)
+      notify('Conta criada. Agora conte o que você precisa.')
+      nav('/perfil/necessidades?primeiro=1')
+    } catch (err) {
+      capture(err, 'email')
+      setAttempt((a) => a + 1)
+    } finally {
+      setSending(false)
+    }
   }
   return (
     <AuthFrame
@@ -100,11 +129,11 @@ export function Cadastro() {
     >
       <form noValidate onSubmit={submit} className="flex flex-col gap-5">
         <ErrorSummary errors={show ? errors : {}} attempt={attempt} />
-        <TextField id="nome" label="Nome" autoComplete="name" value={f.nome} onChange={(e) => setF({ ...f, nome: e.target.value })} error={show ? errors.nome : undefined} />
-        <TextField id="email" label="E-mail" type="email" autoComplete="email" inputMode="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} error={show ? errors.email : undefined} />
-        <PasswordField id="senha" label="Senha" hint="Mínimo de 8 caracteres." autoComplete="new-password" value={f.senha} onChange={(v) => setF({ ...f, senha: v })} error={show ? errors.senha : undefined} />
-        <Button type="submit" block className="mt-2">
-          Criar conta
+        <TextField id="nome" label="Nome" autoComplete="name" maxLength={120} value={f.nome} onChange={(e) => setF({ ...f, nome: e.target.value })} error={show ? errors.nome : undefined} />
+        <TextField id="email" label="E-mail" type="email" autoComplete="email" inputMode="email" maxLength={254} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} error={show ? errors.email : undefined} />
+        <PasswordField id="senha" label="Senha" hint="De 8 a 72 caracteres." autoComplete="new-password" value={f.senha} onChange={(v) => setF({ ...f, senha: v })} error={show ? errors.senha : undefined} />
+        <Button type="submit" block className="mt-2" disabled={sending}>
+          {sending ? 'Criando conta…' : 'Criar conta'}
         </Button>
       </form>
     </AuthFrame>
@@ -113,24 +142,42 @@ export function Cadastro() {
 
 export function Entrar() {
   const nav = useNavigate()
-  const { signIn } = useStore()
+  const [params] = useSearchParams()
+  const { entrar, expirou } = useSession()
   const [f, setF] = useState({ email: '', senha: '' })
   const [attempt, setAttempt] = useState(0)
-  const errors = {
+  const [sending, setSending] = useState(false)
+  const { server, setServer, capture } = useServerErrors()
+  const local = {
     email: !emailOk(f.email) ? 'Informe o e-mail da sua conta.' : undefined,
     senha: !f.senha ? 'Informe sua senha.' : undefined,
   }
+  const errors = { ...local, ...server }
   const show = attempt > 0
-  const submit = (e: FormEvent) => {
+  const volta = params.get('volta')
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
+    setServer({})
     setAttempt((a) => a + 1)
-    if (Object.values(errors).some(Boolean)) return
-    signIn({ nome: 'Renata', email: f.email, necessidades: ['mobilidade'] })
-    nav('/inicio')
+    if (Object.values(local).some(Boolean)) return
+    setSending(true)
+    try {
+      const u = await entrar(f.email.trim(), f.senha)
+      // Só volta para rotas internas (evita redirecionamento aberto)
+      const destino = volta && volta.startsWith('/') && !volta.startsWith('//') ? volta : rotaInicial(u.perfil)
+      nav(destino, { replace: true })
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) setServer({ senha: 'E-mail ou senha incorretos.' })
+      else capture(err)
+      setAttempt((a) => a + 1)
+    } finally {
+      setSending(false)
+    }
   }
   return (
     <AuthFrame
       title="Entrar"
+      lead="Viajantes e estabelecimentos parceiros entram por aqui."
       foot={
         <>
           Ainda não tem conta?{' '}
@@ -138,67 +185,25 @@ export function Entrar() {
             Criar conta de viajante
           </Link>
           <br />
-          Estabelecimento parceiro?{' '}
-          <Link to="/parceiro" className="font-semibold text-brand">
-            Acessar painel do parceiro
+          Tem um estabelecimento?{' '}
+          <Link to="/parceiro/cadastro" className="font-semibold text-brand">
+            Cadastre seu negócio
           </Link>
         </>
       }
     >
+      {expirou && (
+        <div className="mb-5">
+          <Notice>Sua sessão expirou. Entre novamente para continuar.</Notice>
+        </div>
+      )}
       <form noValidate onSubmit={submit} className="flex flex-col gap-5">
         <ErrorSummary errors={show ? errors : {}} attempt={attempt} />
         <TextField id="email" label="E-mail" type="email" autoComplete="email" inputMode="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} error={show ? errors.email : undefined} />
         <PasswordField id="senha" label="Senha" autoComplete="current-password" value={f.senha} onChange={(v) => setF({ ...f, senha: v })} error={show ? errors.senha : undefined} />
-        <Link to="/recuperar-senha" className="-mt-2 inline-flex min-h-11 items-center self-start font-semibold text-brand">
-          Esqueci minha senha
-        </Link>
-        <Button type="submit" block>
-          Entrar
+        <Button type="submit" block disabled={sending}>
+          {sending ? 'Entrando…' : 'Entrar'}
         </Button>
-      </form>
-    </AuthFrame>
-  )
-}
-
-export function RecuperarSenha() {
-  const [email, setEmail] = useState('')
-  const [attempt, setAttempt] = useState(0)
-  const [sent, setSent] = useState(false)
-  const error = !emailOk(email) ? 'Informe um e-mail válido.' : undefined
-  if (sent)
-    return (
-      <AuthFrame title="Confira seu e-mail">
-        <div role="status" className="flex gap-3 rounded-[var(--radius-card)] bg-ok-soft p-4 text-ok">
-          <MailCheck aria-hidden className="size-6 shrink-0" />
-          <p className="text-ink">
-            Se existir uma conta com <strong>{email}</strong>, enviamos um link para criar uma nova senha. O link vale por 1
-            hora.
-          </p>
-        </div>
-        <Link to="/entrar" className="mt-6 inline-flex min-h-11 items-center font-semibold text-brand">
-          Voltar para Entrar
-        </Link>
-      </AuthFrame>
-    )
-  return (
-    <AuthFrame title="Recuperar senha" lead="Enviaremos um link para você criar uma nova senha.">
-      <form
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault()
-          setAttempt((a) => a + 1)
-          if (!error) setSent(true)
-        }}
-        className="flex flex-col gap-5"
-      >
-        <ErrorSummary errors={attempt ? { email: error } : {}} attempt={attempt} />
-        <TextField id="email" label="E-mail da conta" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={attempt ? error : undefined} />
-        <Button type="submit" block>
-          Enviar link
-        </Button>
-        <Link to="/entrar" className="inline-flex min-h-11 items-center justify-center font-semibold text-brand">
-          Voltar para Entrar
-        </Link>
       </form>
     </AuthFrame>
   )

@@ -1,115 +1,242 @@
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Flag, Heart, MapPin, Phone, ShieldCheck, Star } from 'lucide-react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { ChevronLeft, Flag, Heart, MapPin, ShieldCheck, Sparkles, Star } from 'lucide-react'
+import { ApiError, mensagemDeErro } from '../api/client'
+import { avaliacoes, catalogo } from '../api/endpoints'
+import type { AvaliacaoPublica, DetalheEstabelecimento, MotivoDenuncia, Uuid } from '../api/types'
+import { useApi } from '../api/useApi'
 import { Dialog } from '../components/Dialog'
 import { ErrorSummary } from '../components/ErrorSummary'
+import { FichaCategorias, Galeria, NeedSummary } from '../components/Ficha'
 import { PageHeader } from '../components/Layout'
-import {
-  Button,
-  NeedIcon,
-  Rating,
-  SealBadge,
-  SectionTitle,
-  StatusBadge,
-  StatusIcon,
-  Stars,
-  TextArea,
-  TextField,
-  ToggleChip,
-  cx,
-} from '../components/ui'
-import { CATEGORIES, MINIMO_SELO, NEEDS, PLACE_TYPE_LABEL, STATUS_LABEL, needById, ratingFor, statusForCategory, statusForNeed } from '../data/domain'
-import { placeById } from '../data/places'
-import type { FichaItem, NeedId, Place, Review } from '../data/types'
+import { Button, LoadError, Loading, Rating, SealBadge, SectionTitle, Stars, TextArea, TextField, cx } from '../components/ui'
+import { PLACE_TYPE_LABEL, formatData, hojeIso, montarFicha } from '../data/domain'
+import { useDominios } from '../state/dominios'
+import { useSession } from '../state/session'
 import { useStore } from '../state/store'
 
-/* ---------- Resumo por necessidade: a assinatura da ficha ---------- */
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-const lista = (xs: string[]) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} e ${xs[xs.length - 1]}`)
-// "1:12 (8,3%)" vira "rampa (1:12, 8,3%)" para não aninhar parênteses
-const comValor = (i: FichaItem) => (i.valor ? `${i.curto} (${i.valor.replace(/\s*\((.*)\)$/, ', $1')})` : i.curto)
-const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+/**
+ * Cada abertura do detalhe conta uma visita (RF21). Em desenvolvimento o StrictMode executa o
+ * efeito duas vezes; reaproveitar a mesma requisição por alguns segundos evita contar em dobro.
+ */
+const emVoo = new Map<string, { p: Promise<DetalheEstabelecimento>; t: number }>()
+function detalheUnico(id: Uuid) {
+  const atual = emVoo.get(id)
+  if (atual && Date.now() - atual.t < 3000) return atual.p
+  const p = catalogo.detalhe(id)
+  emVoo.set(id, { p, t: Date.now() })
+  return p
+}
 
-/** Assinatura da ficha: para cada necessidade, diz em frases o que atende, o que atende em parte, o que não atende e o que falta informar. */
-function NeedSummary({ place, needs }: { place: Place; needs: NeedId[] }) {
-  const shown: NeedId[] = needs.length ? needs : NEEDS.map((n) => n.id)
+function NaoEncontrado() {
   return (
-    <section aria-labelledby="resumo" className="rounded-[var(--radius-card)] border-2 border-brand-ink bg-canvas p-5 md:p-6">
-      <h2 id="resumo" className="text-[1.375rem] font-bold leading-tight">
-        {needs.length ? 'Para as suas necessidades' : 'Resumo por necessidade'}
-      </h2>
-      <ul className="mt-4 flex flex-col gap-5">
-        {shown.map((n) => {
-          const items = place.ficha.filter((i) => i.necessidades.includes(n))
-          const by = (s: FichaItem['status']) => items.filter((i) => i.status === s)
-          const sim = by('sim').map(comValor)
-          const parcial = by('parcial')
-          const nao = by('nao')
-          const naoInf = by('nao_informado').map((i) => i.curto)
-          return (
-            <li key={n} className="flex gap-3">
-              <span className="mt-0.5 inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink">
-                <NeedIcon need={n} className="size-6" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <h3 className="text-lg font-bold text-ink">{needById(n).label}</h3>
-                  <StatusBadge status={statusForNeed(place, n)} size="sm" />
-                </div>
-                <div className="mt-1.5 flex flex-col gap-1 text-[1.0625rem] leading-relaxed text-ink">
-                  {sim.length > 0 && (
-                    <p>
-                      <strong className="text-ok">Atendem:</strong> {lista(sim)}.
-                    </p>
-                  )}
-                  {parcial.length > 0 && (
-                    <p>
-                      <strong className="text-partial">Em parte:</strong>{' '}
-                      {parcial.map((i) => (i.observacao ? `${i.curto} (${i.observacao.replace(/\.$/, '').toLowerCase()})` : i.curto)).join('; ')}.
-                    </p>
-                  )}
-                  {nao.length > 0 && (
-                    <p>
-                      <strong className="text-danger">Não atende:</strong> {lista(nao.map((i) => i.curto))}.
-                    </p>
-                  )}
-                  {naoInf.length > 0 && (
-                    <p className="text-ink-2">
-                      <strong className="text-unknown">Não informado:</strong> {lista(naoInf)}.
-                    </p>
-                  )}
-                  {items.every((i) => i.status === 'nao_informado') && <p className="text-ink-2">{cap('o local ainda não preencheu estes itens.')}</p>}
-                </div>
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+    <>
+      <PageHeader title="Lugar não encontrado" lead="Ele pode ter saído do catálogo ou o endereço está incorreto." />
+      <Link to="/resultados" className="inline-flex min-h-11 items-center font-semibold text-brand">
+        Ver lugares do catálogo
+      </Link>
+    </>
+  )
+}
+
+/* ---------- Avaliações + denúncia (RF13, RF15) ---------- */
+
+function ReviewItem({ r, onReport, reported, propria }: { r: AvaliacaoPublica; onReport: () => void; reported: boolean; propria: boolean }) {
+  return (
+    <li className="rounded-[var(--radius-card)] border border-line bg-canvas p-4">
+      <article aria-label={`Avaliação publicada em ${formatData(r.criadaEm)}`}>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="font-bold text-ink">{propria ? 'Sua avaliação' : 'Viajante AcessoTrip'}</p>
+          <Stars value={r.nota} />
+        </div>
+        <p className="mt-1 text-sm text-ink-3">Visitou em {formatData(r.dataVisita)}</p>
+        <p className="mt-2 max-w-[65ch] whitespace-pre-line text-ink">{r.texto}</p>
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <p className="text-sm text-ink-3">Publicado em {formatData(r.criadaEm)}</p>
+          {propria ? null : reported ? (
+            <p className="text-sm font-semibold text-ink-3">Denúncia enviada</p>
+          ) : (
+            <button type="button" onClick={onReport} className="inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-semibold text-ink-2 hover:text-danger">
+              <Flag aria-hidden className="size-4" />
+              Denunciar<span className="sr-only"> avaliação publicada em {formatData(r.criadaEm)}</span>
+            </button>
+          )}
+        </div>
+      </article>
+    </li>
+  )
+}
+
+const MOTIVOS: { v: MotivoDenuncia; l: string }[] = [
+  { v: 'INFORMACAO_FALSA', l: 'Informação falsa ou enganosa' },
+  { v: 'OFENSIVO', l: 'Ofensiva ou discriminatória' },
+  { v: 'SPAM', l: 'Spam ou propaganda' },
+  { v: 'DADOS_PESSOAIS', l: 'Expõe dados pessoais' },
+  { v: 'OUTRO', l: 'Outro motivo' },
+]
+
+function ReportDialog({ target, onClose, onSent }: { target: AvaliacaoPublica | null; onClose: () => void; onSent: (id: Uuid) => void }) {
+  const { notify } = useStore()
+  const [motivo, setMotivo] = useState<MotivoDenuncia | ''>('')
+  const [descricao, setDescricao] = useState('')
+  const [erro, setErro] = useState('')
+  const [sending, setSending] = useState(false)
+  const reset = () => {
+    setMotivo('')
+    setDescricao('')
+    setErro('')
+  }
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const dialog = e.currentTarget.closest('dialog')
+    if (!motivo) return setErro('Escolha um motivo para enviar.')
+    if (motivo === 'OUTRO' && !descricao.trim()) return setErro('Descreva o motivo da denúncia.')
+    if (!target) return
+    setSending(true)
+    try {
+      await avaliacoes.denunciar(target.id, motivo, descricao.trim())
+      onSent(target.id)
+      notify('Denúncia enviada. A moderação analisa em até 48 horas.')
+      dialog?.close()
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 409) {
+        onSent(target.id)
+        setErro('Você já denunciou esta avaliação.')
+      } else setErro(mensagemDeErro(err))
+    } finally {
+      setSending(false)
+    }
+  }
+  return (
+    <Dialog
+      open={!!target}
+      onClose={() => {
+        reset()
+        onClose()
+      }}
+      title="Denunciar avaliação"
+      description="A moderação analisa em até 48 horas. A avaliação continua visível até lá."
+    >
+      <form noValidate onSubmit={submit} className="flex flex-col gap-4">
+        {erro && (
+          <p id="denuncia-erro" role="alert" className="text-sm font-semibold text-danger">
+            {erro}
+          </p>
+        )}
+        <fieldset aria-describedby={erro ? 'denuncia-erro' : undefined}>
+          <legend className="mb-2 font-semibold">Motivo</legend>
+          <div className="flex flex-col">
+            {MOTIVOS.map((m) => (
+              <label key={m.v} className="flex min-h-11 cursor-pointer items-center gap-3">
+                <input type="radio" name="motivo" value={m.v} checked={motivo === m.v} onChange={() => setMotivo(m.v)} className="size-5" />
+                {m.l}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <TextArea
+          label="Descreva o problema"
+          hint={motivo === 'OUTRO' ? 'Obrigatório para “Outro motivo”.' : undefined}
+          optional={motivo !== 'OUTRO'}
+          maxLength={1000}
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+        />
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button variant="ghost" onClick={(e) => (e.currentTarget.closest('dialog') as HTMLDialogElement).close()}>
+            Cancelar
+          </Button>
+          <Button type="submit" variant="danger" disabled={sending}>
+            {sending ? 'Enviando…' : 'Enviar denúncia'}
+          </Button>
+        </div>
+      </form>
+    </Dialog>
+  )
+}
+
+function Avaliacoes({ id, nome }: { id: Uuid; nome: string }) {
+  const { usuario } = useSession()
+  const nav = useNavigate()
+  const [pagina, setPagina] = useState(0)
+  const [lista, setLista] = useState<AvaliacaoPublica[]>([])
+  const st = useApi(
+    () =>
+      avaliacoes.publicas(id, pagina, 10).then((r) => {
+        setLista((old) => (pagina === 0 ? r.itens : [...old, ...r.itens]))
+        return r
+      }),
+    [id, pagina],
+  )
+  const [reported, setReported] = useState<Set<Uuid>>(new Set())
+  // As avaliações públicas são anônimas: para não oferecer "Denunciar" na própria, cruza com as do viajante
+  const minhas = useApi(usuario?.perfil === 'VIAJANTE' ? () => avaliacoes.minhas() : null, [usuario?.id])
+  const proprias = new Set(minhas.data?.map((a) => a.id) ?? [])
+  const [target, setTarget] = useState<AvaliacaoPublica | null>(null)
+  const pedirDenuncia = (r: AvaliacaoPublica) => {
+    if (usuario?.perfil !== 'VIAJANTE') return nav(`/entrar?volta=${encodeURIComponent(`/local/${id}`)}`)
+    setTarget(r)
+  }
+
+  return (
+    <section aria-labelledby="avaliacoes">
+      <SectionTitle
+        id="avaliacoes"
+        action={
+          <Link to={`/local/${id}/avaliar`} state={{ nome }} className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-brand">
+            <Star aria-hidden className="size-4" />
+            Avaliar
+          </Link>
+        }
+      >
+        Relatos de viajantes
+      </SectionTitle>
+      {st.error ? (
+        <LoadError error={st.error} onRetry={st.reload} />
+      ) : lista.length ? (
+        <>
+          <ul className="flex flex-col gap-3">
+            {lista.map((r) => (
+              <ReviewItem key={r.id} r={r} propria={proprias.has(r.id)} reported={reported.has(r.id)} onReport={() => pedirDenuncia(r)} />
+            ))}
+          </ul>
+          {st.data && pagina + 1 < st.data.totalPaginas && (
+            <Button variant="secondary" className="mt-4" disabled={st.loading} onClick={() => setPagina((p) => p + 1)}>
+              {st.loading ? 'Carregando…' : 'Ver mais relatos'}
+            </Button>
+          )}
+        </>
+      ) : st.loading ? (
+        <Loading />
+      ) : (
+        <p className="rounded-[var(--radius-card)] border border-dashed border-line-strong bg-canvas p-5 text-ink-2">
+          Ninguém relatou a visita ainda. Esteve aqui?{' '}
+          <Link to={`/local/${id}/avaliar`} state={{ nome }} className="font-semibold text-brand">
+            Seja o primeiro a avaliar
+          </Link>
+          .
+        </p>
+      )}
+      <ReportDialog target={target} onClose={() => setTarget(null)} onSent={(rid) => setReported((s) => new Set(s).add(rid))} />
     </section>
   )
 }
 
-function ContactCard({ place, fav, onFav }: { place: Place; fav: boolean; onFav: () => void }) {
+/* ---------- Página do local ---------- */
+
+function ActionsCard({ d }: { d: DetalheEstabelecimento }) {
+  const { favorites, toggleFavorite } = useStore()
+  const e = d.estabelecimento
+  const fav = favorites.has(e.id)
   return (
     <div className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-line bg-canvas p-5">
-      {place.precoMedio && (
-        <p className="text-ink-2">
-          A partir de <strong className="text-xl text-ink tabular">{place.precoMedio.replace(' por diária', '')}</strong> por diária
-        </p>
-      )}
       <p className="flex gap-2 text-ink-2">
         <MapPin aria-hidden className="mt-0.5 size-5 shrink-0" />
-        {place.endereco}, {place.bairro}, {place.cidade}, {place.uf}
+        {e.cidade}, {e.estado}
       </p>
-      <a
-        href={`tel:${place.telefone.replace(/\D/g, '')}`}
-        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] bg-brand px-5 font-semibold text-white no-underline hover:bg-brand-hover"
-      >
-        <Phone aria-hidden className="size-5" />
-        Ligar para o local
-      </a>
-      <p className="-mt-2 text-center text-[0.9375rem] text-ink-2 tabular">{place.telefone}</p>
-      <Button variant="secondary" aria-pressed={fav} onClick={onFav}>
+      <Button variant="secondary" aria-pressed={fav} onClick={() => toggleFavorite(e.id, e.nome)}>
         <Heart aria-hidden className={cx('size-5', fav && 'fill-current')} />
         {fav ? 'Salvo nos favoritos' : 'Salvar nos favoritos'}
       </Button>
@@ -121,221 +248,20 @@ function ContactCard({ place, fav, onFav }: { place: Place; fav: boolean; onFav:
   )
 }
 
-/* ---------- Ficha por categoria (RF11) ---------- */
-
-function FichaItemRow({ item, highlight }: { item: FichaItem; highlight: boolean }) {
-  return (
-    <li className="flex items-start gap-3 py-3">
-      <StatusIcon status={item.status} className="mt-0.5 size-5 shrink-0" />
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
-          <p className={cx('text-ink', highlight && 'font-semibold')}>
-            {item.atributo}
-            <span className="sr-only">: {STATUS_LABEL[item.status]}</span>
-          </p>
-          {item.valor && <p className="font-semibold text-ink tabular">{item.valor}</p>}
-        </div>
-        {item.observacao && <p className="mt-0.5 text-[0.9375rem] text-ink-2">{item.observacao}</p>}
-        {item.status === 'nao_informado' && !item.observacao && (
-          <p className="mt-0.5 text-[0.9375rem] text-ink-3">O local ainda não informou.</p>
-        )}
-      </div>
-    </li>
-  )
-}
-
-function Ficha({ place, needs }: { place: Place; needs: NeedId[] }) {
-  return (
-    <section aria-labelledby="ficha">
-      <SectionTitle id="ficha">Ficha técnica de acessibilidade</SectionTitle>
-      <div className="flex flex-col gap-3">
-        {CATEGORIES.map((c) => {
-          const items = place.ficha.filter((i) => i.categoria === c.id)
-          const st = statusForCategory(place, c.id)
-          return (
-            <details key={c.id} open={st !== 'nao_informado' && st !== 'nao_se_aplica'} className="group rounded-[var(--radius-card)] border border-line bg-canvas">
-              <summary className="flex min-h-14 cursor-pointer list-none flex-wrap items-center justify-between gap-x-3 gap-y-2 px-5 py-3 [&::-webkit-details-marker]:hidden">
-                <span className="min-w-0 flex-1 basis-44">
-                  <h3 className="text-lg font-bold">{c.label}</h3>
-                  <span className="text-sm text-ink-3">{c.description}</span>
-                </span>
-                <span className="flex items-center gap-2">
-                  <StatusBadge status={st} size="sm" />
-                  <ChevronRight aria-hidden className="size-5 text-ink-3 transition-transform group-open:rotate-90" />
-                </span>
-              </summary>
-              <ul className="divide-y divide-line border-t border-line px-5">
-                {items.map((i) => (
-                  <FichaItemRow key={i.id} item={i} highlight={i.necessidades.some((n) => needs.includes(n))} />
-                ))}
-              </ul>
-            </details>
-          )
-        })}
-      </div>
-    </section>
-  )
-}
-
-/* ---------- Galeria (RF12) ---------- */
-
-function Gallery({ place }: { place: Place }) {
-  const [i, setI] = useState(0)
-  const photo = place.fotos[i]
-  const n = place.fotos.length
-  return (
-    <section aria-labelledby="galeria" aria-roledescription="galeria">
-      <SectionTitle id="galeria">Fotos do local</SectionTitle>
-      <figure className="overflow-hidden rounded-[var(--radius-card)] border border-line bg-canvas">
-        <img src={photo.src} alt={photo.alt} className="aspect-[16/10] w-full object-cover" />
-        <figcaption className="flex items-center justify-between gap-3 px-4 py-2">
-          <span className="text-[0.9375rem] text-ink-2">
-            {photo.categoria === 'geral' ? 'Geral' : CATEGORIES.find((c) => c.id === photo.categoria)?.label}
-            {' · '}
-            <span className="tabular" aria-live="polite">
-              Foto {i + 1} de {n}
-            </span>
-          </span>
-          {n > 1 && (
-            <span className="flex gap-1">
-              <button
-                type="button"
-                onClick={() => setI((i - 1 + n) % n)}
-                className="inline-flex size-11 items-center justify-center rounded-full border border-line hover:bg-surface"
-              >
-                <ChevronLeft aria-hidden className="size-5" />
-                <span className="sr-only">Foto anterior</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setI((i + 1) % n)}
-                className="inline-flex size-11 items-center justify-center rounded-full border border-line hover:bg-surface"
-              >
-                <ChevronRight aria-hidden className="size-5" />
-                <span className="sr-only">Próxima foto</span>
-              </button>
-            </span>
-          )}
-        </figcaption>
-      </figure>
-      <p className="mt-2 text-sm text-ink-3">Fotos ilustrativas de banco de imagens (exemplo). Na plataforma, são as fotos enviadas pelo estabelecimento.</p>
-    </section>
-  )
-}
-
-/* ---------- Avaliações + denúncia (RF13, RF15) ---------- */
-
-function ReviewItem({ r, onReport, reported }: { r: Review; onReport: () => void; reported: boolean }) {
-  const date = new Date(r.publicadoEm + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
-  const [ano, mes] = r.dataVisita.split('-')
-  return (
-    <li className="rounded-[var(--radius-card)] border border-line bg-canvas p-4">
-      <article aria-label={`Avaliação de ${r.autor}`}>
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="font-bold text-ink">{r.autor}</p>
-          <Stars value={r.nota} />
-        </div>
-        <p className="mt-1 flex flex-wrap gap-x-3 text-sm text-ink-3">
-          <span>
-            Visitou em {new Date(+ano, +mes - 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
-          </span>
-          <span>
-            {r.necessidades.map((n) => needById(n).short).join(', ')}
-          </span>
-        </p>
-        <p className="mt-2 max-w-[65ch] text-ink">{r.texto}</p>
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <p className="text-sm text-ink-3">Publicado em {date}</p>
-          {reported ? (
-            <p className="text-sm font-semibold text-ink-3">Denúncia enviada</p>
-          ) : (
-            <button type="button" onClick={onReport} className="inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-semibold text-ink-2 hover:text-danger">
-              <Flag aria-hidden className="size-4" />
-              Denunciar<span className="sr-only"> avaliação de {r.autor}</span>
-            </button>
-          )}
-        </div>
-      </article>
-    </li>
-  )
-}
-
-const REPORT_REASONS = ['Informação falsa ou enganosa', 'Ofensiva ou discriminatória', 'Spam ou propaganda', 'Não é sobre este lugar']
-
-function ReportDialog({ target, onClose }: { target: Review | null; onClose: () => void }) {
-  const { report, notify } = useStore()
-  const [motivo, setMotivo] = useState('')
-  const [erro, setErro] = useState(false)
-  return (
-    <Dialog
-      open={!!target}
-      onClose={() => {
-        setMotivo('')
-        setErro(false)
-        onClose()
-      }}
-      title="Denunciar avaliação"
-      description="A moderação analisa em até 48 horas. A avaliação continua visível até lá."
-    >
-      <form
-        method="dialog"
-        onSubmit={(e) => {
-          if (!motivo) {
-            e.preventDefault()
-            setErro(true)
-            return
-          }
-          if (target) report(target.id)
-          notify('Denúncia enviada. Obrigado por ajudar a manter as informações confiáveis.')
-        }}
-        className="flex flex-col gap-4"
-      >
-        <fieldset aria-describedby={erro ? 'motivo-erro' : undefined}>
-          <legend className="mb-2 font-semibold">Motivo</legend>
-          {erro && (
-            <p id="motivo-erro" className="mb-2 text-sm font-semibold text-danger">
-              Escolha um motivo para enviar.
-            </p>
-          )}
-          <div className="flex flex-col">
-            {REPORT_REASONS.map((m) => (
-              <label key={m} className="flex min-h-11 cursor-pointer items-center gap-3">
-                <input type="radio" name="motivo" value={m} checked={motivo === m} onChange={() => setMotivo(m)} className="size-5" />
-                {m}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <Button variant="ghost" onClick={(e) => (e.currentTarget.closest('dialog') as HTMLDialogElement).close()}>
-            Cancelar
-          </Button>
-          <Button type="submit" variant="danger">
-            Enviar denúncia
-          </Button>
-        </div>
-      </form>
-    </Dialog>
-  )
-}
-
-/* ---------- Página da ficha ---------- */
-
 export function Local() {
   const { id = '' } = useParams()
-  const place = placeById(id)
-  const { traveler, favorites, toggleFavorite, notify, reviews, reported } = useStore()
-  const [reportTarget, setReportTarget] = useState<Review | null>(null)
-  if (!place) return <Navigate to="/resultados" replace />
+  const valido = UUID.test(id)
+  const { campos, categorias } = useDominios()
+  const { minhasNecessidades: needs } = useStore()
+  const st = useApi(valido ? () => detalheUnico(id) : null, [id])
 
-  const needs = traveler?.necessidades ?? []
-  const placeReviews = reviews.filter((r) => r.placeId === place.id)
-  const { media, total } = ratingFor(place, reviews)
-  const fav = favorites.includes(place.id)
-  const onFav = () => {
-    const added = toggleFavorite(place.id)
-    notify(added ? 'Salvo nos favoritos.' : 'Removido dos favoritos.')
-  }
+  if (!valido || (st.error instanceof ApiError && st.error.status === 404)) return <NaoEncontrado />
+  if (st.error) return <LoadError error={st.error} onRetry={st.reload} />
+  if (st.loading || !st.data || !campos.length) return <Loading label="Carregando a ficha do lugar…" />
+
+  const d = st.data
+  const e = d.estabelecimento
+  const ficha = montarFicha(campos, d.ficha)
 
   return (
     <>
@@ -348,7 +274,7 @@ export function Local() {
           </li>
           <li aria-hidden>/</li>
           <li aria-current="page" className="text-ink-2">
-            {place.nome}
+            {e.nome}
           </li>
         </ol>
       </nav>
@@ -356,69 +282,36 @@ export function Local() {
       <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
         <div className="flex min-w-0 flex-col gap-8">
           <div>
-            <PageHeader
-              title={place.nome}
-              lead={
-                <>
-                  {PLACE_TYPE_LABEL[place.tipo]} em {place.cidade}, {place.uf}
-                </>
-              }
-            />
+            <PageHeader title={e.nome} lead={`${PLACE_TYPE_LABEL[e.tipo]} em ${e.cidade}, ${e.estado}`} />
             <div className="-mt-3 flex flex-wrap items-center gap-3">
-              {place.seloVerificado && <SealBadge />}
-              <Rating value={media} total={total} />
+              {e.seloVerificado && <SealBadge />}
+              {e.destaque && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-brand-soft px-2.5 py-1 text-sm font-semibold text-brand-ink">
+                  <Sparkles aria-hidden className="size-4" />
+                  Destaque
+                </span>
+              )}
+              <Rating value={e.notaMedia ?? 0} total={e.notaMedia === null ? 0 : e.totalAvaliacoes} />
             </div>
-            {place.seloVerificado && (
-              <p className="mt-2 text-[0.9375rem] text-ink-2 tabular">
-                {place.avaliacoesPositivas} avaliações positivas de viajantes confirmam esta ficha (mínimo para o selo: {MINIMO_SELO}).
-              </p>
+            {e.seloVerificado && (
+              <p className="mt-2 text-[0.9375rem] text-ink-2">Avaliações positivas de viajantes confirmaram esta ficha.</p>
             )}
-            <p className="mt-4 max-w-[65ch] text-[1.0625rem] text-ink-2">{place.resumo}</p>
           </div>
 
-          <NeedSummary place={place} needs={needs} />
-          {/* No celular, contato logo depois do resumo, sem esperar o fim da página */}
+          <NeedSummary ficha={ficha} needs={needs} card={e} />
+          {/* No celular, ações logo depois do resumo, sem esperar o fim da página */}
           <div className="lg:hidden">
-            <ContactCard place={place} fav={fav} onFav={onFav} />
+            <ActionsCard d={d} />
           </div>
-          <Ficha place={place} needs={needs} />
-          <Gallery place={place} />
-
-          <section aria-labelledby="avaliacoes">
-            <SectionTitle
-              id="avaliacoes"
-              action={
-                <Link to={`/local/${place.id}/avaliar`} className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-brand">
-                  <Star aria-hidden className="size-4" />
-                  Avaliar
-                </Link>
-              }
-            >
-              Relatos recentes
-            </SectionTitle>
-            {placeReviews.length ? (
-              <ul className="flex flex-col gap-3">
-                {placeReviews.map((r) => (
-                  <ReviewItem key={r.id} r={r} reported={reported.includes(r.id)} onReport={() => setReportTarget(r)} />
-                ))}
-              </ul>
-            ) : (
-              <p className="rounded-[var(--radius-card)] border border-dashed border-line-strong bg-canvas p-5 text-ink-2">
-                Ninguém relatou a visita ainda. Esteve aqui?{' '}
-                <Link to={`/local/${place.id}/avaliar`} className="font-semibold text-brand">
-                  Seja o primeiro a avaliar
-                </Link>
-                .
-              </p>
-            )}
-          </section>
+          <FichaCategorias ficha={ficha} needs={needs} />
+          <Galeria fotos={d.fotos} categorias={categorias} />
+          <Avaliacoes id={e.id} nome={e.nome} />
         </div>
 
-        <aside aria-label="Contato e ações" className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
-          <ContactCard place={place} fav={fav} onFav={onFav} />
+        <aside aria-label="Ações" className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
+          <ActionsCard d={d} />
         </aside>
       </div>
-      <ReportDialog target={reportTarget} onClose={() => setReportTarget(null)} />
     </>
   )
 }
@@ -427,49 +320,58 @@ export function Local() {
 
 export function Avaliar() {
   const { id = '' } = useParams()
-  const place = placeById(id)
+  const nome = (useLocation().state as { nome?: string } | null)?.nome
   const nav = useNavigate()
-  const { traveler, addReview, notify } = useStore()
+  const { notify } = useStore()
   const [nota, setNota] = useState(0)
   const [texto, setTexto] = useState('')
   const [visita, setVisita] = useState('')
-  const [needs, setNeeds] = useState<NeedId[]>(traveler?.necessidades ?? [])
   const [attempt, setAttempt] = useState(0)
-  const [thisMonth] = useState(() => new Date().toISOString().slice(0, 7))
-  if (!place) return <Navigate to="/resultados" replace />
+  const [sending, setSending] = useState(false)
+  const [server, setServer] = useState<Record<string, string>>({})
+  const [hoje] = useState(() => hojeIso())
+  if (!UUID.test(id)) return <NaoEncontrado />
 
-  const errors = {
+  const local = {
     nota: nota === 0 ? 'Escolha uma nota de 1 a 5.' : undefined,
-    visita: !visita ? 'Informe o mês da visita.' : undefined,
+    visita: !visita ? 'Informe a data da visita.' : visita > hoje ? 'A data da visita não pode ser no futuro.' : undefined,
     texto: texto.trim().length < 20 ? 'Conte um pouco mais: pelo menos 20 caracteres.' : undefined,
   }
+  // Erro de validação do back no campo dataVisita aparece no campo de data
+  const errors: Record<string, string | undefined> = { ...local, ...server }
+  if (errors.dataVisita) {
+    errors.visita = errors.dataVisita
+    delete errors.dataVisita
+  }
   const show = attempt > 0
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault()
+    setServer({})
     setAttempt((a) => a + 1)
-    if (Object.values(errors).some(Boolean)) return
-    addReview({
-      id: `own-${Date.now()}`,
-      placeId: place.id,
-      autor: traveler ? `${traveler.nome} (você)` : 'Você',
-      necessidades: needs,
-      nota: nota as Review['nota'],
-      texto: texto.trim(),
-      dataVisita: visita,
-      publicadoEm: new Date().toISOString().slice(0, 10),
-    })
-    notify('Obrigado! Sua avaliação foi publicada.')
-    nav(`/local/${place.id}`)
+    if (Object.values(local).some(Boolean)) return
+    setSending(true)
+    try {
+      await avaliacoes.criar(id, { nota, texto: texto.trim(), dataVisita: visita })
+      notify('Obrigado! Sua avaliação foi publicada.')
+      nav(`/local/${id}`)
+    } catch (err) {
+      if (err instanceof ApiError && err.erros.length) setServer(err.porCampo())
+      else if (err instanceof ApiError && err.status === 409) setServer({ visita: 'Você já avaliou este lugar com essa data de visita.' })
+      else setServer({ geral: mensagemDeErro(err) })
+      setAttempt((a) => a + 1)
+    } finally {
+      setSending(false)
+    }
   }
   const labels = ['', 'Muito ruim', 'Ruim', 'Regular', 'Boa', 'Excelente']
 
   return (
     <div className="max-w-2xl">
       <PageHeader
-        title={`Avaliar ${place.nome}`}
-        lead="Seu relato ajuda outras pessoas a decidir e confirma (ou corrige) a ficha do local."
+        title={nome ? `Avaliar ${nome}` : 'Avaliar este lugar'}
+        lead="Seu relato ajuda outras pessoas a decidir e confirma (ou corrige) a ficha do local. Ele é publicado sem o seu nome."
         back={
-          <Link to={`/local/${place.id}`} className="mb-2 inline-flex min-h-11 items-center gap-1 font-semibold text-brand">
+          <Link to={`/local/${id}`} className="mb-2 inline-flex min-h-11 items-center gap-1 font-semibold text-brand">
             <ChevronLeft aria-hidden className="size-5" />
             Voltar para a ficha
           </Link>
@@ -506,27 +408,11 @@ export function Avaliar() {
           {nota > 0 && <p className="mt-2 text-ink-2">{labels[nota]}</p>}
         </fieldset>
 
-        <fieldset>
-          <legend className="mb-2 font-semibold">Você visitou como pessoa com</legend>
-          <div className="flex flex-wrap gap-2">
-            {NEEDS.map((n) => (
-              <ToggleChip
-                key={n.id}
-                pressed={needs.includes(n.id)}
-                onToggle={() => setNeeds((s) => (s.includes(n.id) ? s.filter((x) => x !== n.id) : [...s, n.id]))}
-                icon={<NeedIcon need={n.id} className="size-4" />}
-              >
-                {n.label}
-              </ToggleChip>
-            ))}
-          </div>
-        </fieldset>
-
         <TextField
           id="visita"
-          label="Mês da visita"
-          type="month"
-          max={thisMonth}
+          label="Data da visita"
+          type="date"
+          max={hoje}
           value={visita}
           onChange={(e) => setVisita(e.target.value)}
           error={show ? errors.visita : undefined}
@@ -543,8 +429,8 @@ export function Avaliar() {
         <p className="-mt-4 text-right text-sm text-ink-3 tabular" aria-live="polite">
           {texto.length} de 1000 caracteres
         </p>
-        <Button type="submit" className="sm:self-start">
-          Publicar avaliação
+        <Button type="submit" className="sm:self-start" disabled={sending}>
+          {sending ? 'Publicando…' : 'Publicar avaliação'}
         </Button>
       </form>
     </div>
