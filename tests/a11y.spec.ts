@@ -10,6 +10,7 @@ const ROUTES: { path: string; perfil?: Perfil; h1?: RegExp }[] = [
   { path: '/parceiro/cadastro' },
   { path: '/inicio' },
   { path: '/buscar' },
+  { path: '/panorama' },
   { path: '/resultados' },
   { path: '/resultados?destino=Porto%20Seguro%2C%20BA' },
   { path: `/local/${LOCAL_ID}` },

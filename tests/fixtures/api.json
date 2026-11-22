@@ -1903,5 +1903,205 @@
     "totalItens": 1,
     "totalPaginas": 1,
     "naoLidas": 1
+  },
+  "panorama": {
+    "geral": {
+      "lugares": 13,
+      "destinos": 5,
+      "comSelo": 2,
+      "necessidades": [
+        {
+          "necessidade": {
+            "id": 1,
+            "codigo": "MOBILIDADE_REDUZIDA",
+            "descricao": "Mobilidade reduzida ou deficiência física"
+          },
+          "lugares": 5
+        },
+        {
+          "necessidade": {
+            "id": 2,
+            "codigo": "DEFICIENCIA_VISUAL",
+            "descricao": "Deficiência visual"
+          },
+          "lugares": 4
+        },
+        {
+          "necessidade": {
+            "id": 3,
+            "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+            "descricao": "Deficiência auditiva ou sensorial"
+          },
+          "lugares": 6
+        }
+      ]
+    },
+    "destinos": [
+      {
+        "cidade": "Porto Seguro",
+        "estado": "BA",
+        "lugares": 7,
+        "comSelo": 1,
+        "notaMedia": 4.59,
+        "necessidades": [
+          {
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "lugares": 2
+          },
+          {
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "lugares": 2
+          },
+          {
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "lugares": 2
+          }
+        ]
+      },
+      {
+        "cidade": "Gramado",
+        "estado": "RS",
+        "lugares": 2,
+        "comSelo": 0,
+        "notaMedia": 4.1,
+        "necessidades": [
+          {
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "lugares": 2
+          },
+          {
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "lugares": 0
+          },
+          {
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "lugares": 1
+          }
+        ]
+      },
+      {
+        "cidade": "Salvador",
+        "estado": "BA",
+        "lugares": 2,
+        "comSelo": 0,
+        "notaMedia": 4.13,
+        "necessidades": [
+          {
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "lugares": 0
+          },
+          {
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "lugares": 1
+          },
+          {
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "lugares": 2
+          }
+        ]
+      },
+      {
+        "cidade": "Arraial d'Ajuda",
+        "estado": "BA",
+        "lugares": 1,
+        "comSelo": 0,
+        "notaMedia": 3.0,
+        "necessidades": [
+          {
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "lugares": 0
+          },
+          {
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "lugares": 0
+          },
+          {
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "lugares": 0
+          }
+        ]
+      },
+      {
+        "cidade": "Socorro",
+        "estado": "SP",
+        "lugares": 1,
+        "comSelo": 1,
+        "notaMedia": 4.6,
+        "necessidades": [
+          {
+            "necessidade": {
+              "id": 1,
+              "codigo": "MOBILIDADE_REDUZIDA",
+              "descricao": "Mobilidade reduzida ou deficiência física"
+            },
+            "lugares": 1
+          },
+          {
+            "necessidade": {
+              "id": 2,
+              "codigo": "DEFICIENCIA_VISUAL",
+              "descricao": "Deficiência visual"
+            },
+            "lugares": 1
+          },
+          {
+            "necessidade": {
+              "id": 3,
+              "codigo": "DEFICIENCIA_AUDITIVA_SENSORIAL",
+              "descricao": "Deficiência auditiva ou sensorial"
+            },
+            "lugares": 1
+          }
+        ]
+      }
+    ]
   }
 }

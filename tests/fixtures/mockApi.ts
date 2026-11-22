@@ -42,6 +42,7 @@ export async function mockApi(page: Page, perfil?: Perfil) {
     if (path === '/campos-ficha') return json(route, F.campos)
     if (path === '/catalogo/estabelecimentos') return json(route, F.busca)
     if (path === '/catalogo/destinos') return json(route, F.destinos)
+    if (path === '/catalogo/panorama') return json(route, F.panorama)
     if (path.startsWith('/catalogo/estabelecimentos/'))
       return path.endsWith(LOCAL_ID) ? json(route, F.detalhe) : json(route, { status: 404, title: 'Recurso não encontrado', detail: 'Estabelecimento não encontrado no catálogo.' }, 404)
     if (/^\/estabelecimentos\/[0-9a-f-]{36}\/avaliacoes$/.test(path)) return json(route, F.avaliacoesPublicas)
