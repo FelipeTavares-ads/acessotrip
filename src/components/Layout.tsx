@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Bell,
   CircleUser,
@@ -7,11 +7,14 @@ import {
   Heart,
   House,
   LayoutDashboard,
+  LogOut,
   MessageSquareText,
   Search,
-  Building2,
   type LucideIcon,
 } from 'lucide-react'
+import { notificacoes } from '../api/endpoints'
+import { useApi } from '../api/useApi'
+import { rotaInicial, useSession } from '../state/session'
 import { useStore } from '../state/store'
 import { cx } from './ui'
 
@@ -20,6 +23,8 @@ interface NavItem {
   label: string
   Icon: LucideIcon
   end?: boolean
+  /** Contador exibido junto ao item (ex.: notificações não lidas). */
+  badge?: number
 }
 
 const TRAVELER_NAV: NavItem[] = [
@@ -33,7 +38,7 @@ const PARTNER_NAV: NavItem[] = [
   { to: '/parceiro', label: 'Painel', Icon: LayoutDashboard, end: true },
   { to: '/parceiro/ficha', label: 'Ficha', Icon: ClipboardList },
   { to: '/parceiro/avaliacoes', label: 'Avaliações', Icon: MessageSquareText },
-  { to: '/parceiro/empresa', label: 'Conta', Icon: Building2 },
+  { to: '/parceiro/notificacoes', label: 'Notificações', Icon: Bell },
 ]
 
 export function Brand({ partner }: { partner?: boolean }) {
@@ -118,7 +123,7 @@ function DesktopNav({ items, label }: { items: NavItem[]; label: string }) {
   return (
       <nav aria-label={label} className="hidden md:block">
         <ul className="flex flex-wrap items-center gap-1">
-          {items.map(({ to, label, Icon, end }) => (
+          {items.map(({ to, label, Icon, end, badge }) => (
             <li key={to}>
               <NavLink
                 to={to}
@@ -132,6 +137,7 @@ function DesktopNav({ items, label }: { items: NavItem[]; label: string }) {
               >
                 <Icon aria-hidden className="size-5" />
                 {label}
+                <Badge n={badge} />
               </NavLink>
             </li>
           ))}
@@ -148,7 +154,7 @@ function MobileNav({ items, label }: { items: NavItem[]; label: string }) {
         className="md:hidden fixed inset-x-0 bottom-0 z-30 border-t border-line bg-canvas pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-float)]"
       >
         <ul className="grid grid-cols-4">
-          {items.map(({ to, label, Icon, end }) => (
+          {items.map(({ to, label, Icon, end, badge }) => (
             <li key={to}>
               <NavLink
                 to={to}
@@ -170,7 +176,10 @@ function MobileNav({ items, label }: { items: NavItem[]; label: string }) {
                     >
                       <Icon aria-hidden className="size-[1.375rem]" strokeWidth={isActive ? 2.4 : 2} />
                     </span>
-                    {label}
+                    <span className="inline-flex items-center gap-1">
+                      {label}
+                      <Badge n={badge} />
+                    </span>
                   </>
                 )}
               </NavLink>
@@ -181,7 +190,47 @@ function MobileNav({ items, label }: { items: NavItem[]; label: string }) {
   )
 }
 
+/** Contador numérico com texto para leitor de tela. */
+function Badge({ n }: { n?: number }) {
+  if (!n) return null
+  return (
+    <span className="rounded-full bg-danger px-1.5 text-[0.75rem] leading-5 text-white tabular">
+      {n > 99 ? '99+' : n}
+      <span className="sr-only"> {n === 1 ? 'não lida' : 'não lidas'}</span>
+    </span>
+  )
+}
+
+function AccountAction() {
+  const { usuario, sair } = useSession()
+  const nav = useNavigate()
+  if (!usuario)
+    return (
+      <Link to="/entrar" className="inline-flex min-h-11 items-center px-3 font-semibold text-brand">
+        Entrar
+      </Link>
+    )
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        sair()
+        nav('/')
+      }}
+      className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] px-3 font-semibold text-ink-2 hover:bg-surface hover:text-ink"
+    >
+      <LogOut aria-hidden className="size-5" />
+      Sair
+    </button>
+  )
+}
+
 function Shell({ partner, children }: { partner?: boolean; children?: ReactNode }) {
+  const { pathname } = useLocation()
+  // Contador de notificações não lidas do parceiro, atualizado a cada troca de tela.
+  const naoLidas = useApi(partner ? () => notificacoes.listar(true, 0, 1) : null, [partner, pathname]).data?.naoLidas
+  const items = partner ? PARTNER_NAV.map((i) => (i.to === '/parceiro/notificacoes' ? { ...i, badge: naoLidas } : i)) : TRAVELER_NAV
+  const label = partner ? 'Menu do parceiro' : 'Menu principal'
 
   return (
     <div className="min-h-dvh bg-surface">
@@ -189,26 +238,14 @@ function Shell({ partner, children }: { partner?: boolean; children?: ReactNode 
       <header className="sticky top-0 z-30 border-b border-line bg-canvas/95 backdrop-blur-sm">
         <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 md:px-6">
           <Brand partner={partner} />
-          <DesktopNav items={partner ? PARTNER_NAV : TRAVELER_NAV} label={partner ? 'Menu do parceiro' : 'Menu principal'} />
-          {partner && (
-            <Link
-              to="/parceiro/notificacoes"
-              className="relative inline-flex size-11 items-center justify-center rounded-full text-ink-2 hover:bg-surface md:hidden"
-            >
-              <Bell aria-hidden className="size-6" />
-              <span aria-hidden className="absolute right-2.5 top-2.5 size-2.5 rounded-full bg-danger ring-2 ring-canvas" />
-              <span className="sr-only">Notificações, 1 nova</span>
-            </Link>
-          )}
+          <DesktopNav items={items} label={label} />
+          <AccountAction />
         </div>
       </header>
       <main id="conteudo" className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:px-6 md:pb-16 md:pt-8">
         {children ?? <Outlet />}
-        <p className="mt-14 border-t border-line pt-4 text-sm text-ink-3">
-          Protótipo com dados de exemplo: estabelecimentos, preços, telefones, fotos e avaliações são fictícios.
-        </p>
       </main>
-      <MobileNav items={partner ? PARTNER_NAV : TRAVELER_NAV} label={partner ? 'Menu do parceiro' : 'Menu principal'} />
+      <MobileNav items={items} label={label} />
       <Toast />
     </div>
   )
@@ -229,9 +266,7 @@ export function BareLayout() {
           <nav aria-label="Acesso à conta">
             <ul className="flex flex-wrap items-center gap-1">
               <li>
-                <Link to="/entrar" className="inline-flex min-h-11 items-center px-3 font-semibold text-brand">
-                  Entrar
-                </Link>
+                <BareAccountLink />
               </li>
             </ul>
           </nav>
@@ -242,6 +277,15 @@ export function BareLayout() {
       </main>
       <Toast />
     </div>
+  )
+}
+
+function BareAccountLink() {
+  const { usuario } = useSession()
+  return (
+    <Link to={usuario ? rotaInicial(usuario.perfil) : '/entrar'} className="inline-flex min-h-11 items-center px-3 font-semibold text-brand">
+      {usuario ? (usuario.perfil === 'ESTABELECIMENTO' ? 'Meu painel' : 'Minha conta') : 'Entrar'}
+    </Link>
   )
 }
 
