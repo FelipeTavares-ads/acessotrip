@@ -21,6 +21,7 @@ import type {
   MotivoDenuncia,
   Onboarding,
   Pagina,
+  Panorama,
   PaginaNotificacoes,
   PainelPremium,
   Assinatura,
@@ -82,6 +83,8 @@ export const catalogo = {
       query: { ...b, selo: b.selo || undefined, modoNecessidades: b.modoNecessidades === 'TODAS' ? 'TODAS' : undefined } as Record<string, string | number | boolean | (string | number)[] | undefined>,
       signal,
     }),
+  /** Panorama da acessibilidade por destino; `estado` opcional (UF). */
+  panorama: (estado?: string) => api<Panorama>('/catalogo/panorama', { query: { estado } }),
   destinos: (q: string, signal?: AbortSignal) => api<Destino[]>('/catalogo/destinos', { query: { q }, signal }),
   /** Atenção: cada chamada conta como visita ao perfil (RF21). Só usar quando a pessoa abre a página. */
   detalhe: (id: Uuid) => api<DetalheEstabelecimento>(`/catalogo/estabelecimentos/${id}`),

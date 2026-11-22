@@ -285,3 +285,24 @@ export interface Notificacao {
 export interface PaginaNotificacoes extends Pagina<Notificacao> {
   naoLidas: number
 }
+
+/* ---------- panorama (funcionalidade extra) ---------- */
+
+export interface PanoramaNecessidade {
+  necessidade: TipoNecessidade
+  lugares: number
+}
+
+export interface PanoramaDestino {
+  cidade: string
+  estado: string
+  lugares: number
+  comSelo: number
+  notaMedia: number | null
+  necessidades: PanoramaNecessidade[]
+}
+
+export interface Panorama {
+  geral: { lugares: number; destinos: number; comSelo: number; necessidades: PanoramaNecessidade[] }
+  destinos: PanoramaDestino[]
+}
