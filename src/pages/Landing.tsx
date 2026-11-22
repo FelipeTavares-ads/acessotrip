@@ -1,24 +1,31 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { ArrowRight, Search } from 'lucide-react'
-import { Combobox } from '../components/Combobox'
-import { Button, ButtonLink, NeedIcon, StatusIcon, ToggleChip, SealBadge } from '../components/ui'
-import { DESTINATIONS, PLACES } from '../data/places'
-import { CATEGORIES, NEEDS, STATUS_LABEL, statusForCategory } from '../data/domain'
-import type { NeedId } from '../data/types'
+import { useNavigate } from 'react-router-dom'
+import { Search } from 'lucide-react'
+import { DestinoCombobox } from '../components/Combobox'
+import { Button, ButtonLink, SealBadge, StatusIcon } from '../components/ui'
+import { STATUS_LABEL } from '../data/domain'
+import type { AggStatus } from '../data/types'
+import { NeedChips } from './Search'
 
-const sample = PLACES[0]
+/** Exemplo ilustrativo e fixo (D13): mostra o formato da ficha sem depender de dados do catálogo. */
+const EXEMPLO: { categoria: string; status: AggStatus; detalhe: string }[] = [
+  { categoria: 'Acesso externo', status: 'sim', detalhe: 'Entrada sem degraus, porta de 90 cm' },
+  { categoria: 'Circulação interna', status: 'sim', detalhe: 'Elevador e quarto adaptado' },
+  { categoria: 'Sanitários', status: 'parcial', detalhe: 'Barras de apoio; sem banco de banho' },
+  { categoria: 'Sinalização', status: 'nao', detalhe: 'Sem braille nem mapa tátil' },
+  { categoria: 'Atendimento', status: 'nao_informado', detalhe: 'O local ainda não informou' },
+]
 
 export default function Landing() {
   const nav = useNavigate()
   const [destino, setDestino] = useState('')
-  const [needs, setNeeds] = useState<NeedId[]>([])
+  const [needs, setNeeds] = useState<string[]>([])
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
     const q = new URLSearchParams()
     if (destino) q.set('destino', destino)
-    if (needs.length) q.set('nec', needs.join(','))
+    q.set('nec', needs.join(',') || 'nenhuma')
     nav(`/resultados?${q}`)
   }
 
@@ -31,33 +38,13 @@ export default function Landing() {
               Saiba se o lugar serve para você antes de reservar.
             </h1>
             <p className="mt-4 max-w-[52ch] text-[1.125rem] text-ink-2">
-              Hotéis, pousadas e restaurantes com ficha técnica de acessibilidade: medidas reais, fotos do local e relatos de
-              quem tem a mesma necessidade que você.
+              Hotéis, pousadas, restaurantes e espaços de eventos com ficha técnica de acessibilidade: medidas reais, fotos do
+              local e relatos de viajantes.
             </p>
 
             <form onSubmit={submit} role="search" aria-label="Buscar lugares acessíveis" className="mt-8 flex flex-col gap-5">
-              <Combobox
-                label="Para onde você vai?"
-                value={destino}
-                onChange={setDestino}
-                options={DESTINATIONS}
-                placeholder="Cidade ou estado"
-              />
-              <fieldset>
-                <legend className="mb-2 font-semibold text-ink">Mostrar o que importa para</legend>
-                <div className="flex flex-wrap gap-2">
-                  {NEEDS.map((n) => (
-                    <ToggleChip
-                      key={n.id}
-                      pressed={needs.includes(n.id)}
-                      onToggle={() => setNeeds((s) => (s.includes(n.id) ? s.filter((x) => x !== n.id) : [...s, n.id]))}
-                      icon={<NeedIcon need={n.id} className="size-4" />}
-                    >
-                      {n.label}
-                    </ToggleChip>
-                  ))}
-                </div>
-              </fieldset>
+              <DestinoCombobox label="Para onde você vai?" value={destino} onChange={setDestino} placeholder="Cidade" />
+              <NeedChips legend="Mostrar o que importa para" value={needs} onChange={setNeeds} />
               <Button type="submit" className="min-h-14 text-[1.0625rem] md:self-start md:px-8">
                 <Search aria-hidden className="size-5" />
                 Buscar lugares
@@ -65,40 +52,31 @@ export default function Landing() {
             </form>
           </div>
 
-          {/* Prova do mecanismo: um trecho de ficha real do catálogo de exemplo */}
-          <figure className="self-start overflow-hidden rounded-[var(--radius-card)] border border-line bg-canvas shadow-[var(--shadow-raise)]">
-            <div className="relative aspect-[16/9]">
-              <img src={sample.fotos[0].src} alt={sample.fotos[0].alt} className="size-full object-cover" />
-              <span className="absolute left-3 top-3">
-                <SealBadge />
-              </span>
+          <figure aria-labelledby="exemplo-titulo" className="self-start overflow-hidden rounded-[var(--radius-card)] border border-line bg-canvas shadow-[var(--shadow-raise)]">
+            <div className="flex items-center justify-between gap-3 border-b border-line bg-brand-soft px-5 py-3">
+              <p id="exemplo-titulo" className="font-semibold text-brand-ink">
+                Exemplo ilustrativo de ficha
+              </p>
+              <SealBadge compact />
             </div>
             <div className="p-5">
-              <p className="text-xl font-bold text-ink">{sample.nome}</p>
-              <p className="text-[0.9375rem] text-ink-2">
-                Hotel em {sample.cidade}, {sample.uf}
-              </p>
+              <p className="text-xl font-bold text-ink">Pousada de exemplo</p>
+              <p className="text-[0.9375rem] text-ink-2">Este estabelecimento não existe: serve só para mostrar o formato.</p>
               <dl className="mt-4 divide-y divide-line border-y border-line">
-                {CATEGORIES.map((c) => {
-                  const st = statusForCategory(sample, c.id)
-                  return (
-                    <div key={c.id} className="flex items-center justify-between gap-3 py-2.5">
-                      <dt className="text-ink">{c.label}</dt>
-                      <dd className="flex items-center gap-1.5 text-[0.9375rem] font-semibold text-ink-2">
-                        <StatusIcon status={st} />
-                        {STATUS_LABEL[st]}
-                      </dd>
-                    </div>
-                  )
-                })}
+                {EXEMPLO.map((c) => (
+                  <div key={c.categoria} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-2.5">
+                    <dt className="text-ink">{c.categoria}</dt>
+                    <dd className="flex items-center gap-1.5 text-[0.9375rem] font-semibold text-ink-2">
+                      <StatusIcon status={c.status} />
+                      <span>
+                        {STATUS_LABEL[c.status]}
+                        <span className="block text-sm font-normal text-ink-3">{c.detalhe}</span>
+                      </span>
+                    </dd>
+                  </div>
+                ))}
               </dl>
-              <figcaption className="mt-4 flex items-center justify-between gap-3 text-sm text-ink-3">
-                <span>Exemplo de ficha (dados fictícios)</span>
-                <Link to={`/local/${sample.id}`} className="inline-flex min-h-11 items-center gap-1 font-semibold text-brand">
-                  Ver ficha completa
-                  <ArrowRight aria-hidden className="size-4" />
-                </Link>
-              </figcaption>
+              <figcaption className="mt-4 text-sm text-ink-3">Na plataforma, cada ficha é preenchida pelo próprio estabelecimento.</figcaption>
             </div>
           </figure>
         </div>
@@ -112,8 +90,8 @@ export default function Landing() {
           <div>
             <h3 className="text-lg font-bold text-ink">Ficha em cinco partes</h3>
             <p className="mt-2 text-ink-2">
-              Acesso externo, circulação interna, sanitários, sinalização e atendimento. Cada item diz se atende, atende em
-              parte ou se o local ainda não informou.
+              Acesso externo, circulação interna, sanitários, sinalização e atendimento. Cada item diz se existe, traz a medida ou
+              mostra que o local ainda não informou.
             </p>
           </div>
           <div>
@@ -146,9 +124,8 @@ export default function Landing() {
       </section>
 
       <footer className="border-t border-line bg-canvas">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-ink-3 md:flex-row md:justify-between md:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-ink-3 md:px-6">
           <p>AcessoTrip · Projeto Integrador ADS, IFBA Campus Eunápolis, 2026.</p>
-          <p>Estabelecimentos e avaliações exibidos são exemplos fictícios.</p>
         </div>
       </footer>
     </>
