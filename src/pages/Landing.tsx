@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Search } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ArrowRight, Search } from 'lucide-react'
 import { DestinoCombobox } from '../components/Combobox'
 import { Button, ButtonLink, SealBadge, StatusIcon } from '../components/ui'
 import { STATUS_LABEL } from '../data/domain'
@@ -107,6 +107,10 @@ export default function Landing() {
             </p>
           </div>
         </div>
+        <Link to="/panorama" className="mt-8 inline-flex min-h-11 items-center gap-1 font-semibold text-brand">
+          Ver o panorama da acessibilidade por destino
+          <ArrowRight aria-hidden className="size-4" />
+        </Link>
       </section>
 
       <section className="bg-brand-ink on-dark">
