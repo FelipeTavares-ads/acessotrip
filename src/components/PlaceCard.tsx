@@ -1,30 +1,39 @@
 import { Link } from 'react-router-dom'
-import { Heart } from 'lucide-react'
-import { PLACE_TYPE_LABEL, formatKm, ratingFor, statusForNeed } from '../data/domain'
-import type { NeedId, Place } from '../data/types'
+import { Heart, ImageOff, Sparkles } from 'lucide-react'
+import type { CardEstabelecimento } from '../api/types'
+import { PLACE_TYPE_LABEL, formatKm, statusNecessidade } from '../data/domain'
+import type { NeedCode } from '../data/types'
+import { useDominios } from '../state/dominios'
 import { useStore } from '../state/store'
 import { NeedStatusPill, Rating, SealBadge, cx } from './ui'
 
-/** Card de resultado (RF10): foto, nome, tipo, cidade, ícones de acessibilidade, nota e Selo. */
-export function PlaceCard({ place, needs, headingLevel = 3 }: { place: Place; needs: NeedId[]; headingLevel?: 2 | 3 }) {
-  const { favorites, toggleFavorite, notify, reviews } = useStore()
-  const fav = favorites.includes(place.id)
-  const { media, total } = ratingFor(place, reviews)
+/** Card de resultado (RF10): foto, nome, tipo, cidade, necessidades atendidas, nota, Selo e destaque Premium. */
+export function PlaceCard({ place, needs, headingLevel = 3 }: { place: CardEstabelecimento; needs: NeedCode[]; headingLevel?: 2 | 3 }) {
+  const { favorites, toggleFavorite } = useStore()
+  const { necessidades } = useDominios()
+  const fav = favorites.has(place.id)
   const H = `h${headingLevel}` as 'h2' | 'h3'
-  const shown: NeedId[] = needs.length ? needs : ['mobilidade', 'visual', 'auditiva']
+  const shown: NeedCode[] = needs.length ? needs : necessidades.map((n) => n.codigo)
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-canvas transition-shadow hover:shadow-[var(--shadow-raise)]">
+    <article className="group relative flex w-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-canvas transition-shadow hover:shadow-[var(--shadow-raise)]">
       <div className="relative aspect-[16/10] overflow-hidden bg-unknown-soft">
-        <img
-          src={place.fotos[0]?.src}
-          alt=""
-          loading="lazy"
-          className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-        {place.seloVerificado && (
-          <span className="absolute left-3 top-3">
-            <SealBadge compact />
+        {place.fotoUrl ? (
+          <img src={place.fotoUrl} alt="" loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        ) : (
+          <span className="flex size-full items-center justify-center text-ink-3">
+            <ImageOff aria-hidden className="size-8" />
+          </span>
+        )}
+        {(place.seloVerificado || place.destaque) && (
+          <span className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+            {place.seloVerificado && <SealBadge compact />}
+            {place.destaque && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-canvas px-2.5 py-1 text-sm font-semibold text-brand-ink">
+                <Sparkles aria-hidden className="size-4" />
+                Destaque
+              </span>
+            )}
           </span>
         )}
       </div>
@@ -41,16 +50,13 @@ export function PlaceCard({ place, needs, headingLevel = 3 }: { place: Place; ne
               </Link>
             </H>
             <p className="mt-0.5 text-[0.9375rem] text-ink-2">
-              {PLACE_TYPE_LABEL[place.tipo]} em {place.cidade}, {place.uf}
+              {PLACE_TYPE_LABEL[place.tipo]} em {place.cidade}, {place.estado}
             </p>
           </div>
           <button
             type="button"
             aria-pressed={fav}
-            onClick={() => {
-              const added = toggleFavorite(place.id)
-              notify(added ? `${place.nome} salvo nos favoritos.` : `${place.nome} removido dos favoritos.`)
-            }}
+            onClick={() => toggleFavorite(place.id, place.nome)}
             className={cx(
               'relative z-10 -mr-1.5 -mt-1 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-surface',
               fav ? 'text-danger' : 'text-ink-2',
@@ -63,16 +69,18 @@ export function PlaceCard({ place, needs, headingLevel = 3 }: { place: Place; ne
         <ul aria-label="Acessibilidade por necessidade" className="flex flex-wrap gap-1.5">
           {shown.map((n) => (
             <li key={n}>
-              <NeedStatusPill need={n} status={statusForNeed(place, n)} />
+              <NeedStatusPill need={n} status={statusNecessidade(place, n)} />
             </li>
           ))}
         </ul>
         <div className="mt-auto flex items-center justify-between gap-3 pt-1 text-sm">
-          <Rating value={media} total={total} size="sm" />
-          <span className="text-ink-3 tabular">
-            <span className="sr-only">Distância: </span>
-            {formatKm(place.distanciaKm)}
-          </span>
+          <Rating value={place.notaMedia ?? 0} total={place.notaMedia === null ? 0 : place.totalAvaliacoes} size="sm" />
+          {place.distanciaKm !== null && (
+            <span className="text-ink-3 tabular">
+              <span className="sr-only">Distância: </span>
+              {formatKm(place.distanciaKm)}
+            </span>
+          )}
         </div>
       </div>
     </article>
