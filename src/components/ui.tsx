@@ -8,9 +8,10 @@ import {
   type TextareaHTMLAttributes,
 } from 'react'
 import { Link, type LinkProps } from 'react-router-dom'
-import { Accessibility, CircleCheck, CircleHelp, CircleMinus, CircleSlash, CircleX, Ear, Eye, Star, ShieldCheck } from 'lucide-react'
-import { STATUS_LABEL, needById } from '../data/domain'
-import type { ItemStatus, NeedId } from '../data/types'
+import { Accessibility, CircleAlert, CircleCheck, CircleHelp, CircleMinus, CircleX, Ear, Eye, LoaderCircle, Star, ShieldCheck } from 'lucide-react'
+import { mensagemDeErro } from '../api/client'
+import { STATUS_LABEL, needMeta } from '../data/domain'
+import type { AggStatus, NeedCode } from '../data/types'
 
 export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(' ')
 
@@ -195,22 +196,21 @@ export function ToggleChip({
 
 /* ---------- Need icon ---------- */
 
-export function NeedIcon({ need, className = 'size-5' }: { need: NeedId; className?: string }) {
-  const Icon = need === 'mobilidade' ? Accessibility : need === 'visual' ? Eye : Ear
+export function NeedIcon({ need, className = 'size-5' }: { need: NeedCode; className?: string }) {
+  const Icon = need === 'MOBILIDADE_REDUZIDA' ? Accessibility : need === 'DEFICIENCIA_VISUAL' ? Eye : Ear
   return <Icon aria-hidden className={className} strokeWidth={2} />
 }
 
 /* ---------- Status ---------- */
 
-const statusStyle: Record<ItemStatus, { cls: string; Icon: typeof CircleCheck }> = {
+const statusStyle: Record<AggStatus, { cls: string; Icon: typeof CircleCheck }> = {
   sim: { cls: 'bg-ok-soft text-ok', Icon: CircleCheck },
   parcial: { cls: 'bg-partial-soft text-partial', Icon: CircleMinus },
   nao: { cls: 'bg-danger-soft text-danger', Icon: CircleX },
   nao_informado: { cls: 'bg-unknown-soft text-unknown', Icon: CircleHelp },
-  nao_se_aplica: { cls: 'bg-unknown-soft text-unknown', Icon: CircleSlash },
 }
 
-export function StatusBadge({ status, label, size = 'md' }: { status: ItemStatus; label?: string; size?: 'sm' | 'md' }) {
+export function StatusBadge({ status, label, size = 'md' }: { status: AggStatus; label?: string; size?: 'sm' | 'md' }) {
   const { cls, Icon } = statusStyle[status]
   return (
     <span
@@ -226,15 +226,15 @@ export function StatusBadge({ status, label, size = 'md' }: { status: ItemStatus
   )
 }
 
-export function StatusIcon({ status, className = 'size-5' }: { status: ItemStatus; className?: string }) {
+export function StatusIcon({ status, className = 'size-5' }: { status: AggStatus; className?: string }) {
   const { Icon, cls } = statusStyle[status]
   return <Icon aria-hidden className={cx(className, cls.split(' ').find((c) => c.startsWith('text-')))} strokeWidth={2.25} />
 }
 
 /** Linha compacta: ícone da necessidade + status, com texto completo para leitor de tela. */
-export function NeedStatusPill({ need, status }: { need: NeedId; status: ItemStatus }) {
+export function NeedStatusPill({ need, status }: { need: NeedCode; status: AggStatus }) {
   const { cls, Icon } = statusStyle[status]
-  const n = needById(need)
+  const n = needMeta(need)
   return (
     <span className={cx('inline-flex items-center gap-1 rounded-full pl-2 pr-2.5 py-1 text-sm font-semibold', cls)}>
       <NeedIcon need={need} className="size-4" />
@@ -255,7 +255,7 @@ export function Rating({ value, total, size = 'md' }: { value: number; total?: n
     <span className={cx('inline-flex items-center gap-1 font-semibold text-ink tabular', size === 'sm' ? 'text-sm' : 'text-base')}>
       <Star aria-hidden className="size-4 fill-star text-star" />
       <span className="sr-only">Nota </span>
-      {value.toLocaleString('pt-BR', { minimumFractionDigits: 1 })}
+      {value.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
       <span className="sr-only"> de 5,</span>
       <span className="font-normal text-ink-3">
         ({total}
@@ -325,6 +325,33 @@ export function Notice({ tone = 'info', children }: { tone?: 'info' | 'warn'; ch
       )}
     >
       {children}
+    </div>
+  )
+}
+
+/* ---------- Carregamento e erro (anunciados ao leitor de tela) ---------- */
+
+export function Loading({ label = 'Carregando…' }: { label?: string }) {
+  return (
+    <p role="status" className="flex items-center gap-2 py-6 text-ink-2">
+      <LoaderCircle aria-hidden className="size-5 animate-spin" />
+      {label}
+    </p>
+  )
+}
+
+export function LoadError({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
+  return (
+    <div role="alert" className="flex flex-col items-start gap-3 rounded-[var(--radius-card)] border-2 border-danger bg-danger-soft p-4 text-danger">
+      <p className="flex items-start gap-2 font-semibold">
+        <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0" />
+        {mensagemDeErro(error)}
+      </p>
+      {onRetry && (
+        <Button variant="secondary" onClick={onRetry}>
+          Tentar de novo
+        </Button>
+      )}
     </div>
   )
 }

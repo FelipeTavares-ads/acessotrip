@@ -1,88 +1,152 @@
-import type { Category, CategoryId, FichaItem, ItemStatus, Need, NeedId, Place, PlaceType, Review } from './types'
+import type {
+  CardEstabelecimento,
+  CategoriaCampos,
+  CategoriaFichaPreenchida,
+  ItemFicha,
+  TipoEstabelecimento,
+  TipoNecessidade,
+} from '../api/types'
+import type { AggStatus, FichaCategoria, FichaLinha, ItemStatus, NeedCode } from './types'
 
-export const NEEDS: Need[] = [
-  {
-    id: 'mobilidade',
+/* ---------- Necessidades (rótulos de apoio por código; a descrição oficial vem da API) ---------- */
+
+interface NeedMeta {
+  label: string
+  short: string
+  description: string
+}
+
+const NEED_META: Record<string, NeedMeta> = {
+  MOBILIDADE_REDUZIDA: {
     label: 'Mobilidade reduzida',
     short: 'Mobilidade',
     description: 'Cadeira de rodas, muletas, andador ou dificuldade para subir degraus.',
   },
-  {
-    id: 'visual',
+  DEFICIENCIA_VISUAL: {
     label: 'Deficiência visual',
     short: 'Visual',
     description: 'Cegueira ou baixa visão. Piso tátil, braille, contraste e cão-guia.',
   },
-  {
-    id: 'auditiva',
+  DEFICIENCIA_AUDITIVA_SENSORIAL: {
     label: 'Deficiência auditiva ou sensorial',
     short: 'Auditiva',
-    description: 'Surdez, baixa audição ou sensibilidade sensorial. Libras, avisos visuais, ambientes calmos.',
+    description: 'Surdez, baixa audição ou sensibilidade sensorial. Libras, avisos visuais, alarmes luminosos.',
   },
-]
+}
 
-export const needById = (id: NeedId) => NEEDS.find((n) => n.id === id)!
+/** Rótulos de uma necessidade. Códigos novos (criados por migração) caem na descrição da API. */
+export function needMeta(n: TipoNecessidade | NeedCode, descricao?: string): NeedMeta {
+  const codigo = typeof n === 'string' ? n : n.codigo
+  const desc = typeof n === 'string' ? descricao : n.descricao
+  return NEED_META[codigo] ?? { label: desc ?? codigo, short: desc ?? codigo, description: '' }
+}
 
-export const CATEGORIES: Category[] = [
-  { id: 'acesso_externo', label: 'Acesso externo', description: 'Estacionamento, calçada, rampas e entrada.' },
-  { id: 'circulacao_interna', label: 'Circulação interna', description: 'Portas, corredores, elevadores e quartos.' },
-  { id: 'sanitarios', label: 'Sanitários', description: 'Banheiro adaptado, barras de apoio e chuveiro.' },
-  { id: 'sinalizacao', label: 'Sinalização', description: 'Piso tátil, braille, contraste e avisos visuais.' },
-  { id: 'atendimento', label: 'Atendimento', description: 'Equipe treinada, Libras, cardápio acessível e cão-guia.' },
-]
+/* ---------- Categorias ---------- */
 
-export const categoryById = (id: CategoryId) => CATEGORIES.find((c) => c.id === id)!
+const CATEGORY_HELP: Record<string, string> = {
+  ACESSO_EXTERNO: 'Estacionamento, calçada, rampas e entrada.',
+  CIRCULACAO_INTERNA: 'Portas, corredores, elevadores e quartos.',
+  SANITARIOS: 'Banheiro acessível, barras de apoio e banho.',
+  SINALIZACAO: 'Piso tátil, braille, contraste e alarmes.',
+  ATENDIMENTO: 'Libras, cardápio acessível, cão-guia e atendimento por texto.',
+}
+export const categoryHelp = (codigo: string) => CATEGORY_HELP[codigo] ?? ''
 
-export const PLACE_TYPE_LABEL: Record<PlaceType, string> = {
+/* ---------- Tipos de estabelecimento ---------- */
+
+export const PLACE_TYPES: TipoEstabelecimento[] = ['HOTEL', 'POUSADA', 'RESTAURANTE', 'ESPACO_EVENTOS']
+
+export const PLACE_TYPE_LABEL: Record<TipoEstabelecimento, string> = {
   HOTEL: 'Hotel',
   POUSADA: 'Pousada',
   RESTAURANTE: 'Restaurante',
+  ESPACO_EVENTOS: 'Espaço de eventos',
 }
 
-export const STATUS_LABEL: Record<ItemStatus, string> = {
+/* ---------- Status ---------- */
+
+export const STATUS_LABEL: Record<AggStatus, string> = {
   sim: 'Atende',
-  parcial: 'Atende parcialmente',
+  parcial: 'Atende em parte',
   nao: 'Não atende',
   nao_informado: 'Não informado',
-  nao_se_aplica: 'Não se aplica',
 }
 
-/** ParametroPlataforma: mínimo de avaliações positivas (nota 4 ou 5) para o Selo. */
-export const MINIMO_SELO = 10
+/** Monta a ficha completa: todos os campos ativos do catálogo, com o item preenchido quando existir. */
+export function montarFicha(campos: CategoriaCampos[], preenchida: CategoriaFichaPreenchida[]): FichaCategoria[] {
+  const itens = new Map<number, ItemFicha>()
+  for (const c of preenchida) for (const i of c.itens) itens.set(i.campoId, i)
+  return campos.map(({ categoria, campos }) => ({
+    categoria,
+    linhas: campos.map((campo): FichaLinha => {
+      const item = itens.get(campo.id)
+      if (!item) return { campo, status: 'nao_informado' }
+      if (campo.tipoValor === 'SIM_NAO') return { campo, item, status: item.valor === 'SIM' ? 'sim' : 'nao' }
+      return { campo, item }
+    }),
+  }))
+}
+
+/** Resumo de um conjunto de linhas, considerando só os itens SIM/NÃO informados. */
+export function resumo(linhas: FichaLinha[]): { status: AggStatus; atendem: number; informados: number } {
+  const sn = linhas.filter((l) => l.status === 'sim' || l.status === 'nao')
+  const atendem = sn.filter((l) => l.status === 'sim').length
+  const status: AggStatus = !sn.length ? 'nao_informado' : atendem === sn.length ? 'sim' : atendem === 0 ? 'nao' : 'parcial'
+  return { status, atendem, informados: sn.length }
+}
+
+/** Rótulo do resumo, ex.: "3 de 4 itens atendem". */
+export function resumoLabel(r: ReturnType<typeof resumo>): string {
+  if (r.status === 'nao_informado') return STATUS_LABEL.nao_informado
+  if (r.status === 'sim') return STATUS_LABEL.sim
+  if (r.status === 'nao') return STATUS_LABEL.nao
+  return `${r.atendem} de ${r.informados} atendem`
+}
 
 /**
- * Resume o status de um conjunto de itens a partir do que foi informado: o pior caso vence.
- * "Não informado" não rebaixa o resumo (é mostrado à parte) e "não se aplica" é ignorado.
+ * Status de uma necessidade para um estabelecimento. A fonte é `necessidadesAtendidas` da API
+ * (regra do backend: mais da metade dos campos SIM_NAO da necessidade marcados SIM), para que
+ * filtro e ficha nunca se contradigam (RN07).
  */
-export function summarize(items: FichaItem[]): ItemStatus {
-  const relevant = items.filter((i) => i.status !== 'nao_se_aplica')
-  if (relevant.length === 0) return items.length ? 'nao_se_aplica' : 'nao_informado'
-  const known = relevant.filter((i) => i.status !== 'nao_informado')
-  if (known.length === 0) return 'nao_informado'
-  if (known.some((i) => i.status === 'nao')) return 'nao'
-  if (known.some((i) => i.status === 'parcial')) return 'parcial'
-  return 'sim'
+export function statusNecessidade(card: CardEstabelecimento, codigo: NeedCode, ficha?: FichaCategoria[]): ItemStatus {
+  if (card.necessidadesAtendidas.some((n) => n.codigo === codigo)) return 'sim'
+  if (ficha) {
+    const informado = ficha.some((c) =>
+      c.linhas.some((l) => l.campo.necessidade.codigo === codigo && (l.status === 'sim' || l.status === 'nao')),
+    )
+    if (!informado) return 'nao_informado'
+  }
+  return 'nao'
 }
 
-export const unknownCount = (items: FichaItem[]) => items.filter((i) => i.status === 'nao_informado').length
+/* ---------- Formatação ---------- */
 
-export function statusForNeed(place: Place, need: NeedId): ItemStatus {
-  return summarize(place.ficha.filter((i) => i.necessidades.includes(need)))
-}
-
-export function statusForCategory(place: Place, cat: CategoryId): ItemStatus {
-  return summarize(place.ficha.filter((i) => i.categoria === cat))
-}
-
-/** Nota agregada da plataforma + avaliações novas do próprio viajante nesta sessão. */
-export function ratingFor(place: Place, reviews: Review[]): { media: number; total: number } {
-  const own = reviews.filter((r) => r.placeId === place.id && r.id.startsWith('own-'))
-  const total = place.totalAvaliacoes + own.length
-  if (total === 0) return { media: 0, total: 0 }
-  const soma = place.notaMedia * place.totalAvaliacoes + own.reduce((s, r) => s + r.nota, 0)
-  return { media: Math.round((soma / total) * 10) / 10, total }
+export function formatValor(l: FichaLinha): string {
+  if (!l.item) return STATUS_LABEL.nao_informado
+  if (l.campo.tipoValor === 'SIM_NAO') return l.item.valor === 'SIM' ? 'Sim' : 'Não'
+  if (l.campo.tipoValor === 'NUMERO') {
+    const n = Number(l.item.valor.replace(',', '.'))
+    const txt = Number.isFinite(n) ? n.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) : l.item.valor
+    return l.campo.unidade ? `${txt} ${l.campo.unidade}` : txt
+  }
+  return l.item.valor
 }
 
 export const formatNota = (n: number) => n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
 export const formatKm = (n: number) =>
   n < 1 ? `${Math.round(n * 1000)} m` : `${n.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} km`
+
+/** "2026-11-10" → "10 de novembro de 2026" (sem deslocamento de fuso). */
+export function formatData(iso: string, opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' }) {
+  const [a, m, d] = iso.slice(0, 10).split('-').map(Number)
+  return new Date(a, m - 1, d).toLocaleDateString('pt-BR', opts)
+}
+
+/** Data local de hoje no formato ISO (YYYY-MM-DD). */
+export function hojeIso(desloc = 0) {
+  const d = new Date()
+  d.setDate(d.getDate() + desloc)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+export const UFS = 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split(' ')
