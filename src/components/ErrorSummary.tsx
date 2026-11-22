@@ -19,14 +19,22 @@ export function ErrorSummary({ errors, attempt }: { errors: Record<string, strin
     >
       <p className="flex items-center gap-2 font-bold">
         <CircleAlert aria-hidden className="size-5" />
-        {list.length === 1 ? 'Corrija 1 campo para continuar' : `Corrija ${list.length} campos para continuar`}
+        {list.length === 1 && list[0][0] === 'geral'
+          ? 'Não foi possível continuar'
+          : list.length === 1
+            ? 'Corrija 1 campo para continuar'
+            : `Corrija ${list.length} campos para continuar`}
       </p>
       <ul className="mt-2 list-disc pl-7">
         {list.map(([field, msg]) => (
           <li key={field}>
-            <a href={`#${field}`} className="font-semibold text-danger underline">
-              {msg}
-            </a>
+            {field === 'geral' ? (
+              <span className="font-semibold">{msg}</span>
+            ) : (
+              <a href={`#${field}`} className="font-semibold text-danger underline">
+                {msg}
+              </a>
+            )}
           </li>
         ))}
       </ul>
