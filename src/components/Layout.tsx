@@ -42,10 +42,7 @@ export function Brand({ partner }: { partner?: boolean }) {
       to={partner ? '/parceiro' : '/'}
       className="inline-flex items-center gap-2 no-underline text-ink font-bold text-[1.375rem] tracking-[-0.02em] min-h-11"
     >
-      <svg aria-hidden viewBox="0 0 32 32" className="size-8">
-        <rect width="32" height="32" rx="8" fill="var(--color-brand)" />
-        <path d="M9 23 16 8l7 15M11.8 17.5h8.4" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <img src="/logo.jpg" alt="" width={40} height={40} className="size-10 rounded-lg" />
       AcessoTrip
       {partner && (
         <span className="ml-1 rounded-full bg-brand-soft px-2.5 py-0.5 text-sm font-semibold tracking-normal text-brand-ink">
